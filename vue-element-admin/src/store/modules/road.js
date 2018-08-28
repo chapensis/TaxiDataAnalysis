@@ -15,9 +15,9 @@ const mutations = {
 }
 
 const actions = {
-  getRoadInfo({commit}, body) {
+  getRoadInfo({ commit }, body) {
     return Road.get(body).then(response => {
-    	commit('setRoadInfo', response.data);
+      commit('setRoadInfo', response.data);
     });
   }
 }

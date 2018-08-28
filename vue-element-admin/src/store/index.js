@@ -8,6 +8,7 @@ import user from './modules/user'
 import taxi from './modules/taxi'
 import road from './modules/road'
 import getters from './getters'
+import state from './state'
 
 Vue.use(Vuex)
 
@@ -21,7 +22,8 @@ const store = new Vuex.Store({
     taxi,
     road
   },
-  getters
+  getters,
+  state
 })
 
 if (module.hot) {
