@@ -9,7 +9,12 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+      // '/login': {
+      //   target: 'localhost:8080/api/login',
+      //   changeOrigin: true
+      // }
+    },
 
     // Various Dev Server settings
 
@@ -42,6 +47,8 @@ module.exports = {
     // (https://github.com/webpack/css-loader#sourcemaps)
     // In our experience, they generally work as expected,
     // just be aware of this issue when enabling this option.
+    cacheBusting: true,
+
     cssSourceMap: false
   },
 

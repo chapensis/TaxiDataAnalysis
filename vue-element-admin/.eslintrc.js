@@ -14,7 +14,7 @@ module.exports = {
   // add your custom rules here
   //it is base on https://github.com/vuejs/eslint-config-vue
   rules: {
-    "vue/max-attributes-per-line": [2, {
+    "vue/max-attributes-per-line": [0, {
       "singleline": 10,
       "multiline": {
         "max": 1,
@@ -23,11 +23,11 @@ module.exports = {
     }],
     "vue/name-property-casing": ["error", "PascalCase"],
     'accessor-pairs': 2,
-    'arrow-spacing': [2, {
+    'arrow-spacing': [0, {
       'before': true,
       'after': true
     }],
-    'block-spacing': [2, 'always'],
+    'block-spacing': 0,
     'brace-style': [2, '1tbs', {
       'allowSingleLine': true
     }],
@@ -93,7 +93,7 @@ module.exports = {
     'no-implied-eval': 2,
     'no-inner-declarations': [2, 'functions'],
     'no-invalid-regexp': 2,
-    'no-irregular-whitespace': 2,
+    'no-irregular-whitespace': 0,
     'no-iterator': 2,
     'no-label-var': 2,
     'no-labels': [2, {
@@ -180,7 +180,7 @@ module.exports = {
     'spaced-comment': [2, 'always', {
       'markers': ['global', 'globals', 'eslint', 'eslint-disable', '*package', '!', ',']
     }],
-    'template-curly-spacing': [2, 'never'],
+    'template-curly-spacing': 0,
     'use-isnan': 2,
     'valid-typeof': 2,
     'wrap-iife': [2, 'any'],

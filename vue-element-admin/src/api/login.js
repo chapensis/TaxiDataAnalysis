@@ -1,10 +1,14 @@
 import request from '@/utils/request'
+import api from './index'
 
 export function loginByUsername(username, password) {
   const data = {
     username,
     password
   }
+  // const method = 'POST'
+  console.log('开始登陆...');
+  // return api.fetch({ url: '/login/login', method, data })
   return request({
     url: '/login/login',
     method: 'post',

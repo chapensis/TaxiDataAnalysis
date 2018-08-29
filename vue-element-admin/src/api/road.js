@@ -1,5 +1,5 @@
 import api from './index'
-const url = '/road'
+const url = '/taxidataanalysis/road'
 
 export default {
   get(condition) {

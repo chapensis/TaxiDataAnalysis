@@ -66,7 +66,7 @@ export default {
     ...mapState('road', ['roadInfo'])
   },
   created() {
-    
+
   },
   methods: {
     ...mapActions('road', ['getRoadInfo']),

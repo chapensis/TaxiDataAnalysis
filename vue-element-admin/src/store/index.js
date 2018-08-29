@@ -26,20 +26,20 @@ const store = new Vuex.Store({
   state
 })
 
-if (module.hot) {
-	module.hot.accept([
-    './getters',
-    './modules/user',
-    './modules/taxi',
-    './modules/road'
-	], () => {
-    store.hotUpdate({
-      getters: require('./getters'),
-      user: require('./modules/user'),
-      taxi: require('./modules/taxi'),
-      road: require('./modules/road')
-    });
-  })
-}
+// if (module.hot) {
+//   module.hot.accept([
+//     './getters',
+//     './modules/user',
+//     './modules/taxi',
+//     './modules/road'
+//   ], () => {
+//     store.hotUpdate({
+//       getters: require('./getters'),
+//       user: require('./modules/user'),
+//       taxi: require('./modules/taxi'),
+//       road: require('./modules/road')
+//     });
+//   })
+// }
 
 export default store

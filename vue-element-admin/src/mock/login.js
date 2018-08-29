@@ -19,6 +19,7 @@ const userMap = {
 
 export default {
   loginByUsername: config => {
+    console.log('loginByUsername run')
     const { username } = JSON.parse(config.body)
     return userMap[username]
   },

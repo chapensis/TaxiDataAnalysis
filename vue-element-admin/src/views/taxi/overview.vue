@@ -49,7 +49,7 @@
 
 <script>
 import CountTo from 'vue-count-to'
-import { mapState, mapActions } from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
   name: 'Overview',

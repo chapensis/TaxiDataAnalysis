@@ -3,47 +3,57 @@
     <div class = "road-list">
       <!--查询条件-->
       <template>
-        路段名：<el-input placeholder="请输入查询路段名" prefix-icon="el-icon-search"
-         v-model="queryRoadName" class="input-with-select" size="mini"></el-input>
-         <el-button type="primary" @click="filter" size="mini">搜索</el-button>
+        路段名：
+        <el-input v-model="queryRoadName"
+                  placeholder="请输入查询路段名"
+                  prefix-icon="el-icon-search"
+                  class="input-with-select"
+                  size="mini" />
+        <el-button type="primary"
+                   size="mini"
+                   @click="filter">搜索</el-button>
       </template>
-      <div style="margin-top:15px;"></div>
+      <div style="margin-top:15px;" />
       <template>
         <el-table
-          :data="roadInfo"
-          stripe
-          border
-          fit
-          highlight-current-row
           v-loading="isLoading"
+          :data="roadInfo"
           :element-loading-text="loadingText"
           :default-sort="{prop: 'roadId', order: 'descending'}"
+          stripe
+          border
+          highlight-current-row
+          fit
           style="width: 100%">
-          <el-table-column
-            prop="roadId"
-            label="路段Id"
-            width="180">
+          <el-table-column label="路段Id" width="180">
+            <template slot-scope="scope">
+              <span>{{ scope.row.roadId }}</span>
+            </template>
           </el-table-column>
-          <el-table-column
-            prop="roadName"
-            label="路段名"
-            width="180">
+          <el-table-column label="路段名" width="180">
+            <template slot-scope="scope">
+              <span>{{ scope.row.roadName }}</span>
+            </template>
           </el-table-column>
-          <el-table-column
-            prop="roadLon"
-            label="路段经度">
+          <el-table-column label="路段经度">
+            <template slot-scope="scope">
+              <span>{{ scope.row.roadLon }}</span>
+            </template>
           </el-table-column>
-          <el-table-column
-            prop="roadLat"
-            label="路段纬度">
+          <el-table-column label="路段纬度">
+            <template slot-scope="scope">
+              <span>{{ scope.row.roadLat }}</span>
+            </template>
           </el-table-column>
-          <el-table-column
-            prop="roadLength"
-            label="路段长度">
+          <el-table-column label="路段长度">
+            <template slot-scope="scope">
+              <span>{{ scope.row.roadLength }}</span>
+            </template>
           </el-table-column>
-          <el-table-column
-            prop="roadTime"
-            label="路段时间">
+          <el-table-column label="路段时间">
+            <template slot-scope="scope">
+              <span>{{ scope.row.roadTime }}</span>
+            </template>
           </el-table-column>
         </el-table>
       </template>
