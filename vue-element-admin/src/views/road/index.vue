@@ -17,7 +17,7 @@
       <template>
         <el-table
           v-loading="isLoading"
-          :data="roadInfo"
+          :data="roadList"
           :element-loading-text="loadingText"
           :default-sort="{prop: 'roadId', order: 'descending'}"
           stripe
@@ -57,6 +57,15 @@
           </el-table-column>
         </el-table>
       </template>
+      <el-pagination
+        :total="totalRoadNum"
+        :current-page="pageNum"
+        :page-sizes="[5, 10, 15, 20]"
+        :page-size="pageSize"
+        background
+        layout="total, sizes, prev, pager, next, jumper"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange" />
     </div>
   </div>
 </template>
@@ -80,7 +89,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('road', ['roadInfo'])
+    ...mapState('road', ['roadList', 'totalRoadNum'])
   },
   created() {
     this.loadingText = '正在加载路段数据'
@@ -97,12 +106,59 @@ export default {
         if (typeof err === 'string' && err !== 'cancel') {
           this.$message.error(err)
         }
+      });
+
+    this.getTotalRoadNum()
+      .then(() => {
+        // this.isLoading = false
+      })
+      .catch(err => {
+        // this.isLoading = false
+        if (typeof err === 'string' && err !== 'cancel') {
+          this.$message.error(err)
+        }
       })
   },
   methods: {
-    ...mapActions('road', ['getRoadInfo']),
+    ...mapActions('road', ['getRoadInfo', 'getTotalRoadNum']),
     handleSetLineChartData(type) {
       this.$emit('handleSetLineChartData', type)
+    },
+
+    handleSizeChange(val) {
+      this.loadingText = '正在加载路段数据'
+      this.isLoading = true
+      this.getRoadInfo({
+        pageNum: this.pageNum,
+        pageSize: val
+      })
+        .then(() => {
+          this.isLoading = false
+        })
+        .catch(err => {
+          this.isLoading = false
+          if (typeof err === 'string' && err !== 'cancel') {
+            this.$message.error(err)
+          }
+        })
+    },
+
+    handleCurrentChange(val) {
+      this.loadingText = '正在加载路段数据'
+      this.isLoading = true
+      this.getRoadInfo({
+        pageNum: val,
+        pageSize: this.pageSize
+      })
+        .then(() => {
+          this.isLoading = false
+        })
+        .catch(err => {
+          this.isLoading = false
+          if (typeof err === 'string' && err !== 'cancel') {
+            this.$message.error(err)
+          }
+        })
     },
 
     filter() {

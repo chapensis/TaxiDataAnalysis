@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-import api from './index'
+// import api from './index'
 
 export function loginByUsername(username, password) {
   const data = {
@@ -10,7 +10,7 @@ export function loginByUsername(username, password) {
   console.log('开始登陆...');
   // return api.fetch({ url: '/login/login', method, data })
   return request({
-    url: '/login/login',
+    url: '/service/user/login',
     method: 'post',
     data
   })
@@ -25,7 +25,7 @@ export function logout() {
 
 export function getUserInfo(token) {
   return request({
-    url: '/user/info',
+    url: '/service/user/info',
     method: 'get',
     params: { token }
   })

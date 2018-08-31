@@ -63,7 +63,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('road', ['roadInfo'])
+    ...mapState('road', ['roadList'])
   },
   created() {
 
