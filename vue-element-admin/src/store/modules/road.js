@@ -2,7 +2,7 @@ import Road from '@/api/road';
 
 const state = {
   roadList: [],
-  totalRoadNum: ''
+  totalRoadNum: 0
 }
 
 const getters = {

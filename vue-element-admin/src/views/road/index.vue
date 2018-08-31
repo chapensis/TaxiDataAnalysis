@@ -24,6 +24,8 @@
           border
           highlight-current-row
           fit
+          row-class-name="align-center"
+          header-cell-class-name="align-center"
           style="width: 100%">
           <el-table-column label="路段Id" width="180">
             <template slot-scope="scope">
@@ -50,9 +52,16 @@
               <span>{{ scope.row.roadLength }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="路段时间">
+          <el-table-column label="路段时间(分钟)">
             <template slot-scope="scope">
               <span>{{ scope.row.roadTime }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column fixed = "right" label = "操作" width = "120">
+            <template slot-scope="scope">
+              <el-button size="mini" type="primary" @click="showRoadDetail(scope.row)">
+                查看详细
+              </el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -161,6 +170,16 @@ export default {
         })
     },
 
+    showRoadDetail(row) {
+      this.$router.push({
+        name: 'RoadMapdetail',
+        params: {
+          roadLon: row.roadLon,
+          roadLat: row.roadLat
+        }
+      });
+    },
+
     filter() {
       this.$message.info('当前功能正在开发中......');
     }
@@ -172,11 +191,14 @@ export default {
 #road-list {
   .road-list {
     margin: 50px;
-    align: "center"
+    align: "center";
   }
   .input-with-select {
     width: 150px;
     margin-right:15px
+  }
+  .align-center {
+    text-align: center;
   }
 }
 </style>

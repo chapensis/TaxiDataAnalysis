@@ -16,15 +16,20 @@ const taxiRouter = {
       path: 'road-overview',
       component: () => import('@/views/road/overview'),
       name: 'RoadOverview',
-      // 这里是真正对图标起作用的地方
       meta: { title: 'RoadOverview' }
     },
     {
-      path: 'road-info',
+      path: 'road-list',
       component: () => import('@/views/road/index'),
-      name: 'RoadInfo',
-      // 这里是真正对图标起作用的地方
-      meta: { title: 'Road' }
+      name: 'RoadList',
+      meta: { title: 'RoadList' }
+    },
+    {
+      path: 'road-map-detail',
+      component: () => import('@/views/road/mapdetail'),
+      name: 'RoadMapdetail',
+      meta: { title: 'RoadMapDetail' },
+      hidden: true
     }
   ]
 }

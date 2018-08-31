@@ -40,6 +40,8 @@ export default {
     Taxi: 'Taxi',
     TaxiOverview: 'Taxi Overview',
     Road: 'Road',
+    RoadList: 'RoadList',
+    RoadMapDetail: 'RoadMapDetail',
     RoadOverview: 'Road Overview',
     Overview: 'Overview',
     dynamicTable: 'Dynamic Table',
