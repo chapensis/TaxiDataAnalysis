@@ -6,36 +6,36 @@ spring:
     datasource:
         name: mysql_test
         type: com.alibaba.druid.pool.DruidDataSource
-        #druidÏà¹ØÅäÖÃ
+        #druidç›¸å…³é…ç½®
         druid:
-          #¼à¿ØÍ³¼ÆÀ¹½ØµÄfilters
+          #ç›‘æ§ç»Ÿè®¡æ‹¦æˆªçš„filters
           filters: stat
           driver-class-name: com.mysql.jdbc.Driver
-          #»ù±¾ÊôĞÔ
+          #åŸºæœ¬å±æ€§
           url: jdbc:mysql://127.0.0.1:3306/taxidataanalysis?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
           username: root
           password: 123456
-          #ÅäÖÃ³õÊ¼»¯´óĞ¡/×îĞ¡/×î´ó
+          #é…ç½®åˆå§‹åŒ–å¤§å°/æœ€å°/æœ€å¤§
           initial-size: 1
           min-idle: 1
           max-active: 20
-          #»ñÈ¡Á¬½ÓµÈ´ı³¬Ê±Ê±¼ä
+          #è·å–è¿æ¥ç­‰å¾…è¶…æ—¶æ—¶é—´
           max-wait: 60000
-          #¼ä¸ô¶à¾Ã½øĞĞÒ»´Î¼ì²â£¬¼ì²âĞèÒª¹Ø±ÕµÄ¿ÕÏĞÁ¬½Ó
+          #é—´éš”å¤šä¹…è¿›è¡Œä¸€æ¬¡æ£€æµ‹ï¼Œæ£€æµ‹éœ€è¦å…³é—­çš„ç©ºé—²è¿æ¥
           time-between-eviction-runs-millis: 60000
-          #Ò»¸öÁ¬½ÓÔÚ³ØÖĞ×îĞ¡Éú´æµÄÊ±¼ä
+          #ä¸€ä¸ªè¿æ¥åœ¨æ± ä¸­æœ€å°ç”Ÿå­˜çš„æ—¶é—´
           min-evictable-idle-time-millis: 300000
           validation-query: SELECT 'x'
           test-while-idle: true
           test-on-borrow: false
           test-on-return: false
-          #´ò¿ªPSCache£¬²¢Ö¸¶¨Ã¿¸öÁ¬½ÓÉÏPSCacheµÄ´óĞ¡¡£oracleÉèÎªtrue£¬mysqlÉèÎªfalse¡£·Ö¿â·Ö±í½Ï¶àÍÆ¼öÉèÖÃÎªfalse
+          #æ‰“å¼€PSCacheï¼Œå¹¶æŒ‡å®šæ¯ä¸ªè¿æ¥ä¸ŠPSCacheçš„å¤§å°ã€‚oracleè®¾ä¸ºtrueï¼Œmysqlè®¾ä¸ºfalseã€‚åˆ†åº“åˆ†è¡¨è¾ƒå¤šæ¨èè®¾ç½®ä¸ºfalse
           pool-prepared-statements: false
           max-pool-prepared-statement-per-connection-size: 20
-## ¸ÃÅäÖÃ½ÚµãÎª¶ÀÁ¢µÄ½Úµã£¬ÓĞºÜ¶àÍ¬Ñ§ÈİÒ×½«Õâ¸öÅäÖÃ·ÅÔÚspringµÄ½ÚµãÏÂ£¬µ¼ÖÂÅäÖÃÎŞ·¨±»Ê¶±ğ
+## è¯¥é…ç½®èŠ‚ç‚¹ä¸ºç‹¬ç«‹çš„èŠ‚ç‚¹ï¼Œæœ‰å¾ˆå¤šåŒå­¦å®¹æ˜“å°†è¿™ä¸ªé…ç½®æ”¾åœ¨springçš„èŠ‚ç‚¹ä¸‹ï¼Œå¯¼è‡´é…ç½®æ— æ³•è¢«è¯†åˆ«
 mybatis:
-  mapper-locations: classpath:mapper/*.xml  #×¢Òâ£ºÒ»¶¨Òª¶ÔÓ¦mapperÓ³ÉäxmlÎÄ¼şµÄËùÔÚÂ·¾¶
-  type-aliases-package: com.yangchang.TaxiDataAnalysis.bean.po  # ×¢Òâ£º¶ÔÓ¦ÊµÌåÀàµÄÂ·¾¶
+  mapper-locations: classpath:mapper/*.xml  #æ³¨æ„ï¼šä¸€å®šè¦å¯¹åº”mapperæ˜ å°„xmlæ–‡ä»¶çš„æ‰€åœ¨è·¯å¾„
+  type-aliases-package: com.yangchang.TaxiDataAnalysis.bean.po  # æ³¨æ„ï¼šå¯¹åº”å®ä½“ç±»çš„è·¯å¾„
 
 #pagehelper
 pagehelper:

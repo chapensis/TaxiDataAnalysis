@@ -1,4 +1,4 @@
-package com.yangchang.TaxiDataAnalysis.bean.vo;
+package com.yangchang.TaxiDataAnalysis.bean;
 
 import lombok.Data;
 

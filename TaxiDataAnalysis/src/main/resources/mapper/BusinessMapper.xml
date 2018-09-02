@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yangchang.TaxiDataAnalysis.dao.BusinessDao" >
+    <resultMap id="businessMap" type="com.yangchang.TaxiDataAnalysis.bean.po.BusinessPO">
+        <id property="businessId" column="business_id" />
+        <result property="stamp" column="stamp" jdbcType="TIMESTAMP"/>
+        <result property="unitId" column="unit_id" />
+        <result property="numberPlate" column="number_plate" />
+        <result property="onTime" column="on_time" jdbcType="TIMESTAMP" />
+        <result property="onLon" column="on_lon" />
+        <result property="onLat" column="on_lat" />
+        <result property="offTime" column="off_time" jdbcType="TIMESTAMP" />
+        <result property="offLon" column="off_lon" />
+        <result property="offLat" column="off_lat" />
+        <result property="runLength" column="run_length" />
+        <result property="runMoney" column="run_money" />
+        <result property="runTime" column="run_time" />
+    </resultMap>
+
+    <select id="getBusinessList" resultMap="businessMap">
+        SELECT
+            business_id, stamp, unit_id, number_plate, on_time ,on_lon, on_lat,
+            off_time, off_lon, off_lat, run_length, run_money, run_time
+        FROM
+            business
+        <where>
+
+        </where>
+    </select>
+
+    <select id="getBusinessListNum" resultType="java.lang.Integer">
+        SELECT
+          COUNT(business_id) as businessListNum
+        FROM
+          business
+        <where>
+
+        </where>
+    </select>
+
+</mapper>

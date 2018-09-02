@@ -1,13 +1,16 @@
 package com.yangchang.TaxiDataAnalysis.bean.po;
 
+import com.yangchang.TaxiDataAnalysis.bean.Pagination;
 import lombok.Data;
 
 @Data
 public class RoadInfoPO {
-    private int roadId;
+    private Integer roadId;
     private String roadName;
-    private double roadLon;
-    private double roadLat;
-    private int roadLength;
-    private int roadTime;
+    private Double roadLon;
+    private Double roadLat;
+    private Integer roadLength;
+    private Integer roadTime;
+
+    private Pagination pagination;
 }

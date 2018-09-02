@@ -1,10 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.yangchang.TaxiDataAnalysis.dao.RoadInfoDao" >
-    <select id="getRoadInfos" resultType="com.yangchang.TaxiDataAnalysis.bean.po.RoadInfoPO">
+    <select id="getRoadList" resultType="com.yangchang.TaxiDataAnalysis.bean.po.RoadInfoPO">
         SELECT
-          roadId, roadName, roadLon, roadLat, roadLength, roadTime
+          road_id roadId, road_name roadName, road_lon roadLon, road_lat roadLat,
+          road_length roadLength, road_time roadTime
         FROM
-          roadinfoall
+          road
+        <where>
+          <if test="roadName != null and roadName != ''">
+            and road_name like concat('%', #{roadName}, '%')
+          </if>
+        </where>
+    </select>
+
+    <select id="getRoadListInfo" resultType="com.yangchang.TaxiDataAnalysis.bean.po.RoadListInfoPO">
+        SELECT
+          COUNT(road_id) as roadListNum
+        FROM
+          road
+        <where>
+            <if test="roadName != null and roadName != ''">
+                and road_name like concat('%', #{roadName}, '%')
+            </if>
+        </where>
     </select>
 </mapper>
