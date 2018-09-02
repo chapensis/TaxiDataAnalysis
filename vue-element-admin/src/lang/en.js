@@ -41,6 +41,8 @@ export default {
     TaxiOverview: 'Taxi Overview',
     Road: 'Road',
     RoadList: 'RoadList',
+    RoadSeekingTripList: 'RoadSeekingTripList',
+    RoadDrivingTripList: 'RoadDrivingTripList',
     RoadMapDetail: 'RoadMapDetail',
     RoadMapPanorama: 'RoadMapPanorama',
     RoadOverview: 'Road Overview',

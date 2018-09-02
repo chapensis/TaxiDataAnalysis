@@ -25,6 +25,18 @@ const taxiRouter = {
       meta: { title: 'RoadList' }
     },
     {
+      path: 'road-seeking-trip-list',
+      component: () => import('@/views/road/seekingtrip'),
+      name: 'RoadSeekingTripList',
+      meta: { title: 'RoadSeekingTripList' }
+    },
+    {
+      path: 'road-driving-trip-list',
+      component: () => import('@/views/road/index'),
+      name: 'RoadDrivingTripList',
+      meta: { title: 'RoadDrivingTripList' }
+    },
+    {
       path: 'road-map-detail',
       component: () => import('@/views/road/mapdetail'),
       name: 'RoadMapDetail',

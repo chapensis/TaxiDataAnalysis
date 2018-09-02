@@ -40,6 +40,8 @@ export default {
     Taxi: '出租车',
     Road: '路段',
     RoadList: '路段列表',
+    RoadSeekingTripList: '寻客路段列表',
+    RoadDrivingTripList: '载客路段列表',
     RoadMapDetail: '路段地图详情',
     TaxiOverview: '出租车数据总览',
     RoadOverview: '路段数据总览',

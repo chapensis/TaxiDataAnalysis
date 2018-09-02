@@ -3,9 +3,21 @@
     <div class = "road-list">
       <!--查询条件-->
       <template>
-        路段名：
-        <el-input v-model="queryRoadName"
-                  placeholder="请输入查询路段名"
+        起点路段名：
+        <el-input v-model="queryStartRoadName"
+                  placeholder="请输入查询起点路段名"
+                  prefix-icon="el-icon-search"
+                  class="input-with-select"
+                  size="mini" />
+        终点路段名：
+        <el-input v-model="queryEndRoadName"
+                  placeholder="请输入查询终点路段名"
+                  prefix-icon="el-icon-search"
+                  class="input-with-select"
+                  size="mini" />
+        时间段：
+        <el-input v-model="queryTimeslot"
+                  placeholder="请输入查询终点路段名"
                   prefix-icon="el-icon-search"
                   class="input-with-select"
                   size="mini" />
@@ -20,9 +32,11 @@
       <template>
         <el-table
           v-loading="isLoading"
-          :data="roadList"
+          :data="roadSeekingTripList"
           :element-loading-text="loadingText"
-          :default-sort="{prop: 'roadId', order: 'descending'}"
+          :default-sort="{prop: 'tripId', order: 'descending'}"
+          element-loading-spinner="el-icon-loading"
+          element-loading-background="rgba(0, 0, 0, 0.8)"
           stripe
           border
           highlight-current-row
@@ -32,34 +46,39 @@
           style="width: 100%"
           @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="55" />
-          <el-table-column label="路段Id" width="180">
+          <el-table-column label="寻客Id" width="80">
             <template slot-scope="scope">
-              <span>{{ scope.row.roadId }}</span>
+              <span>{{ scope.row.tripId }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="路段名" width="180">
+          <el-table-column label="起点路段Id" width="120">
             <template slot-scope="scope">
-              <span>{{ scope.row.roadName }}</span>
+              <span>{{ scope.row.startRoadInfo.roadId }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="路段经度">
+          <el-table-column label="终点路段Id" width="120">
             <template slot-scope="scope">
-              <span>{{ scope.row.roadLon }}</span>
+              <span>{{ scope.row.endRoadInfo.roadId }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="路段纬度">
+          <el-table-column label="时间段" width="100">
             <template slot-scope="scope">
-              <span>{{ scope.row.roadLat }}</span>
+              <span>{{ scope.row.timeslot }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="路段长度(米)">
+          <el-table-column label="总时间(分钟)">
             <template slot-scope="scope">
-              <span>{{ scope.row.roadLength }}</span>
+              <span>{{ scope.row.totalTime }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="路段时间(分钟)">
+          <el-table-column label="总金钱(元)">
             <template slot-scope="scope">
-              <span>{{ scope.row.roadTime }}</span>
+              <span>{{ scope.row.totalMoney }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="总次数">
+            <template slot-scope="scope">
+              <span>{{ scope.row.totalNum }}</span>
             </template>
           </el-table-column>
           <el-table-column fixed = "right" label = "操作" width = "180">
@@ -67,15 +86,12 @@
               <el-button size="mini" type="danger" @click="showRoadDetail(scope.row)">
                 定位
               </el-button>
-              <el-button size="mini" type="warning" @click="showRoadPanorama(scope.row)">
-                全景
-              </el-button>
             </template>
           </el-table-column>
         </el-table>
       </template>
       <el-pagination
-        :total="roadListNum"
+        :total="roadSeekingTripListNum"
         :current-page="pageNum"
         :page-sizes="[5, 10, 15, 20]"
         :page-size="pageSize"
@@ -98,29 +114,31 @@ export default {
   },
   data() {
     return {
-      queryRoadName: '',
+      queryStartRoadName: '',
+      queryEndRoadName: '',
+      queryTimeslot: '',
       pageNum: 1,
       pageSize: 10,
-      isLoading: '',
+      isLoading: true,
       loadingText: '',
       multipleSelectedPosition: []
     }
   },
   computed: {
-    ...mapState('road', ['roadList', 'roadListNum'])
+    ...mapState('road', ['roadSeekingTripList', 'roadSeekingTripListNum'])
   },
   created() {
-    this.loadingText = '正在加载路段数据';
+    this.loadingText = '正在加载寻客路段数据';
     this.isLoading = true;
     Promise.all([
-      this.getRoadList({
+      this.getRoadSeekingTripList({
         pagination: {
           pageNum: this.pageNum,
           pageSize: this.pageSize
         }
       }),
-      this.getTotalRoadNum({
-        roadName: this.queryRoadName
+      this.getRoadSeekingTripListNum({
+        timeslot: this.queryTimeslot
       })
     ])
       .then(() => {
@@ -134,7 +152,7 @@ export default {
       });
   },
   methods: {
-    ...mapActions('road', ['getRoadList', 'getTotalRoadNum']),
+    ...mapActions('road', ['getRoadSeekingTripList', 'getRoadSeekingTripListNum']),
     handleSetLineChartData(type) {
       this.$emit('handleSetLineChartData', type)
     },
@@ -142,19 +160,19 @@ export default {
       this.multipleSelectedPosition = val;
     },
     handleSizeChange(val) {
-      this.loadingText = '正在加载路段数据'
+      this.loadingText = '正在加载寻客路段数据'
       this.isLoading = true
       this.pageSize = val;
       Promise.all([
-        this.getRoadList({
+        this.getRoadSeekingTripList({
           pagination: {
             pageNum: this.pageNum,
             pageSize: this.pageSize
           },
-          roadName: this.queryRoadName
+          timeslot: this.queryTimeslot
         }),
-        this.getTotalRoadNum({
-          roadName: this.queryRoadName
+        this.getRoadSeekingTripListNum({
+          timeslot: this.queryTimeslot
         })
       ])
         .then(() => {
@@ -169,19 +187,19 @@ export default {
     },
 
     handleCurrentChange(val) {
-      this.loadingText = '正在加载路段数据';
+      this.loadingText = '正在加载寻客路段数据';
       this.isLoading = true;
       this.pageNum = val;
       Promise.all([
-        this.getRoadList({
+        this.getRoadSeekingTripList({
           pagination: {
             pageNum: this.pageNum,
             pageSize: this.pageSize
           },
-          roadName: this.queryRoadName
+          timeslot: this.queryTimeslot
         }),
-        this.getTotalRoadNum({
-          roadName: this.queryRoadName
+        this.getRoadSeekingTripListNum({
+          timeslot: this.queryTimeslot
         })
       ])
         .then(() => {
@@ -223,18 +241,18 @@ export default {
     },
 
     filter() {
-      this.loadingText = '正在加载路段数据'
+      this.loadingText = '正在加载寻客路段数据'
       this.isLoading = true
       Promise.all([
-        this.getRoadList({
+        this.getRoadSeekingTripList({
           pagination: {
             pageNum: this.pageNum,
             pageSize: this.pageSize
           },
-          roadName: this.queryRoadName
+          timeslot: this.queryTimeslot
         }),
-        this.getTotalRoadNum({
-          roadName: this.queryRoadName
+        this.getRoadSeekingTripListNum({
+          timeslot: this.queryTimeslot
         })
       ])
         .then(() => {
@@ -258,7 +276,7 @@ export default {
     align: "center";
   }
   .input-with-select {
-    width: 150px;
+    width: 180px;
     margin-right:15px
   }
   .align-center {
