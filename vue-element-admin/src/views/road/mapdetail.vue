@@ -24,12 +24,14 @@ export default {
   methods: {
     baiduMap() {
       var map = new BMap.Map('allmap');
-      console.log('this.$route.params', this.$route.params);
-      var point = new BMap.Point(this.$route.params.roadLon, this.$route.params.roadLat);
+      var point = new BMap.Point(this.$route.params[0].roadLon, this.$route.params[0].roadLat);
       map.centerAndZoom(point, 14);
+      for (const position of this.$route.params) {
+        var p = new BMap.Point(position.roadLon, position.roadLat);
+        var marker = new BMap.Marker(p);
+        map.addOverlay(marker);
+      }
       map.enableScrollWheelZoom(true);
-      var marker = new BMap.Marker(point);
-      map.addOverlay(marker);
     }
   }
 }

@@ -43,6 +43,7 @@ export default {
     RoadMapDetail: '路段地图详情',
     TaxiOverview: '出租车数据总览',
     RoadOverview: '路段数据总览',
+    RoadMapPanorama: '路段导航',
     dynamicTable: '动态Table',
     dragTable: '拖拽Table',
     inlineEditTable: 'Table内编辑',

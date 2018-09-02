@@ -2,7 +2,7 @@ import Road from '@/api/road';
 
 const state = {
   roadList: [],
-  totalRoadNum: 0
+  roadListNum: 0
 }
 
 const getters = {
@@ -16,12 +16,12 @@ const mutations = {
 
   setRoadTotalNum(state, data) {
     console.log('data:' + data);
-    state.totalRoadNum = data[0];
+    state.roadListNum = data[0].roadListNum;
   }
 }
 
 const actions = {
-  getRoadInfo({ commit }, body) {
+  getRoadList({ commit }, body) {
     return Road.get(body).then(response => {
       commit('setRoadInfo', response.data);
     });

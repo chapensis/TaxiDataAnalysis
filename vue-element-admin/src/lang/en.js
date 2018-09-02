@@ -42,6 +42,7 @@ export default {
     Road: 'Road',
     RoadList: 'RoadList',
     RoadMapDetail: 'RoadMapDetail',
+    RoadMapPanorama: 'RoadMapPanorama',
     RoadOverview: 'Road Overview',
     Overview: 'Overview',
     dynamicTable: 'Dynamic Table',

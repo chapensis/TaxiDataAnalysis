@@ -27,8 +27,15 @@ const taxiRouter = {
     {
       path: 'road-map-detail',
       component: () => import('@/views/road/mapdetail'),
-      name: 'RoadMapdetail',
+      name: 'RoadMapDetail',
       meta: { title: 'RoadMapDetail' },
+      hidden: true
+    },
+    {
+      path: 'road-map-panorama',
+      component: () => import('@/views/road/mappanorama'),
+      name: 'RoadMapPanorama',
+      meta: { title: 'RoadMapPanorama' },
       hidden: true
     }
   ]

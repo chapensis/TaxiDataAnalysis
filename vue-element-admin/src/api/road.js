@@ -3,14 +3,16 @@ const url = '/service/road'
 
 export default {
   get(condition) {
-    const method = 'GET'
-    const getUrl = url + `/list?pageNum=${condition.pageNum}&pageSize=${condition.pageSize}`
-    return api.fetch({ url: getUrl, method })
+    const method = 'POST'
+    const postUrl = url + '/list'
+    console.log('get condition:', condition);
+    return api.fetch({ url: postUrl, method, body: condition })
   },
 
   getTotalRoadNum(condition) {
-    const method = 'GET'
-    const getUrl = url + '/total'
-    return api.fetch({ url: getUrl, method })
+    const method = 'POST'
+    const postUrl = url + '/total'
+    console.log('getTotalRoadNum condition:', condition);
+    return api.fetch({ url: postUrl, method, body: condition })
   }
 }

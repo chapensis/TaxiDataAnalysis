@@ -12,6 +12,9 @@
         <el-button type="primary"
                    size="mini"
                    @click="filter">搜索</el-button>
+        <el-button type="danger"
+                   size="mini"
+                   @click="showMultiRoadDetail">批量定位</el-button>
       </template>
       <div style="margin-top:15px;" />
       <template>
@@ -26,7 +29,9 @@
           fit
           row-class-name="align-center"
           header-cell-class-name="align-center"
-          style="width: 100%">
+          style="width: 100%"
+          @selection-change="handleSelectionChange">
+          <el-table-column type="selection" width="55" />
           <el-table-column label="路段Id" width="180">
             <template slot-scope="scope">
               <span>{{ scope.row.roadId }}</span>
@@ -47,7 +52,7 @@
               <span>{{ scope.row.roadLat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="路段长度">
+          <el-table-column label="路段长度(米)">
             <template slot-scope="scope">
               <span>{{ scope.row.roadLength }}</span>
             </template>
@@ -57,17 +62,20 @@
               <span>{{ scope.row.roadTime }}</span>
             </template>
           </el-table-column>
-          <el-table-column fixed = "right" label = "操作" width = "120">
+          <el-table-column fixed = "right" label = "操作" width = "180">
             <template slot-scope="scope">
-              <el-button size="mini" type="primary" @click="showRoadDetail(scope.row)">
-                查看详细
+              <el-button size="mini" type="danger" @click="showRoadDetail(scope.row)">
+                定位
+              </el-button>
+              <el-button size="mini" type="warning" @click="showRoadPanorama(scope.row)">
+                全景
               </el-button>
             </template>
           </el-table-column>
         </el-table>
       </template>
       <el-pagination
-        :total="totalRoadNum"
+        :total="roadListNum"
         :current-page="pageNum"
         :page-sizes="[5, 10, 15, 20]"
         :page-size="pageSize"
@@ -94,19 +102,27 @@ export default {
       pageNum: 1,
       pageSize: 10,
       isLoading: '',
-      loadingText: ''
+      loadingText: '',
+      multipleSelectedPosition: []
     }
   },
   computed: {
-    ...mapState('road', ['roadList', 'totalRoadNum'])
+    ...mapState('road', ['roadList', 'roadListNum'])
   },
   created() {
-    this.loadingText = '正在加载路段数据'
-    this.isLoading = true
-    this.getRoadInfo({
-      pageNum: this.pageNum,
-      pageSize: this.pageSize
-    })
+    this.loadingText = '正在加载路段数据';
+    this.isLoading = true;
+    Promise.all(
+      this.getRoadList({
+        pagination: {
+          pageNum: this.pageNum,
+          pageSize: this.pageSize
+        }
+      }),
+      this.getTotalRoadNum({
+        roadName: this.queryRoadName
+      })
+    )
       .then(() => {
         this.isLoading = false
       })
@@ -116,31 +132,31 @@ export default {
           this.$message.error(err)
         }
       });
-
-    this.getTotalRoadNum()
-      .then(() => {
-        // this.isLoading = false
-      })
-      .catch(err => {
-        // this.isLoading = false
-        if (typeof err === 'string' && err !== 'cancel') {
-          this.$message.error(err)
-        }
-      })
   },
   methods: {
-    ...mapActions('road', ['getRoadInfo', 'getTotalRoadNum']),
+    ...mapActions('road', ['getRoadList', 'getTotalRoadNum']),
     handleSetLineChartData(type) {
       this.$emit('handleSetLineChartData', type)
     },
-
+    handleSelectionChange(val) {
+      this.multipleSelectedPosition = val;
+    },
     handleSizeChange(val) {
       this.loadingText = '正在加载路段数据'
       this.isLoading = true
-      this.getRoadInfo({
-        pageNum: this.pageNum,
-        pageSize: val
-      })
+      this.pageSize = val;
+      Promise.all(
+        this.getRoadList({
+          pagination: {
+            pageNum: this.pageNum,
+            pageSize: this.pageSize
+          },
+          roadName: this.queryRoadName
+        }),
+        this.getTotalRoadNum({
+          roadName: this.queryRoadName
+        })
+      )
         .then(() => {
           this.isLoading = false
         })
@@ -149,16 +165,25 @@ export default {
           if (typeof err === 'string' && err !== 'cancel') {
             this.$message.error(err)
           }
-        })
+        });
     },
 
     handleCurrentChange(val) {
-      this.loadingText = '正在加载路段数据'
-      this.isLoading = true
-      this.getRoadInfo({
-        pageNum: val,
-        pageSize: this.pageSize
-      })
+      this.loadingText = '正在加载路段数据';
+      this.isLoading = true;
+      this.pageNum = val;
+      Promise.all(
+        this.getRoadList({
+          pagination: {
+            pageNum: this.pageNum,
+            pageSize: this.pageSize
+          },
+          roadName: this.queryRoadName
+        }),
+        this.getTotalRoadNum({
+          roadName: this.queryRoadName
+        })
+      )
         .then(() => {
           this.isLoading = false
         })
@@ -167,12 +192,29 @@ export default {
           if (typeof err === 'string' && err !== 'cancel') {
             this.$message.error(err)
           }
-        })
+        });
     },
 
     showRoadDetail(row) {
       this.$router.push({
-        name: 'RoadMapdetail',
+        name: 'RoadMapDetail',
+        params: [{
+          roadLon: row.roadLon,
+          roadLat: row.roadLat
+        }]
+      });
+    },
+
+    showMultiRoadDetail() {
+      this.$router.push({
+        name: 'RoadMapDetail',
+        params: this.multipleSelectedPosition
+      });
+    },
+
+    showRoadPanorama(row) {
+      this.$router.push({
+        name: 'RoadMapPanorama',
         params: {
           roadLon: row.roadLon,
           roadLat: row.roadLat
@@ -181,7 +223,29 @@ export default {
     },
 
     filter() {
-      this.$message.info('当前功能正在开发中......');
+      this.loadingText = '正在加载路段数据'
+      this.isLoading = true
+      Promise.all(
+        this.getRoadList({
+          pagination: {
+            pageNum: this.pageNum,
+            pageSize: this.pageSize
+          },
+          roadName: this.queryRoadName
+        }),
+        this.getTotalRoadNum({
+          roadName: this.queryRoadName
+        })
+      )
+        .then(() => {
+          this.isLoading = false
+        })
+        .catch(err => {
+          this.isLoading = false
+          if (typeof err === 'string' && err !== 'cancel') {
+            this.$message.error(err)
+          }
+        });
     }
   }
 }
