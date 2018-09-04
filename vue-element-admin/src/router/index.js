@@ -12,6 +12,7 @@ import chartsRouter from './modules/charts'
 import tableRouter from './modules/table'
 import taxiRouter from './modules/taxi'
 import roadRouter from './modules/road'
+import businessRouter from './modules/business'
 import nestedRouter from './modules/nested'
 
 /** note: submenu only apppear when children.length>=1
@@ -149,6 +150,7 @@ export const asyncRouterMap = [
   /** When your routing table is too long, you can split it into small modules**/
   taxiRouter,
   roadRouter,
+  businessRouter,
   componentsRouter,
   chartsRouter,
   nestedRouter,

@@ -31,7 +31,6 @@ public class RoadTripController {
      */
     @PostMapping("slist")
     public ResultVO getRoadSeekingTripList(@RequestBody RoadTripInfoVO roadTripInfoVO) {
-        log.info("RoadTripController getRoadSeekingTripList: " + roadTripInfoVO);
         List list = roadTripService.getRoadSeekingTripList(roadTripInfoVO);
         ResultVO result = GeneralUtil.success(list);
         return result;
@@ -45,7 +44,6 @@ public class RoadTripController {
      */
     @PostMapping("dlist")
     public ResultVO getRoadDrivingTripList(@RequestBody RoadTripInfoVO roadTripInfoVO) {
-        log.info("RoadTripController getRoadDrivingTripList: " + roadTripInfoVO);
         List list = roadTripService.getRoadDrivingTripList(roadTripInfoVO);
         ResultVO result = GeneralUtil.success(list);
         return result;
@@ -59,7 +57,6 @@ public class RoadTripController {
      */
     @PostMapping("stotal")
     public ResultVO getRoadSeekingTripListNum(@RequestBody RoadTripInfoVO roadTripInfoVO) {
-        log.info("RoadController getTotalRoadNum: " + roadTripInfoVO);
         Integer num = roadTripService.getRoadSeekingTripListNum(roadTripInfoVO);
         ResultVO result = GeneralUtil.success(new ArrayList() {
             {
@@ -77,7 +74,6 @@ public class RoadTripController {
      */
     @PostMapping("dtotal")
     public ResultVO getRoadDrivingTripListNum(@RequestBody RoadTripInfoVO roadTripInfoVO) {
-        log.info("RoadController getTotalRoadNum: " + roadTripInfoVO);
         Integer num = roadTripService.getRoadDrivingTripListNum(roadTripInfoVO);
         ResultVO result = GeneralUtil.success(new ArrayList() {
             {

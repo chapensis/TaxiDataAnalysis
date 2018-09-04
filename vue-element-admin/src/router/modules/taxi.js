@@ -9,7 +9,7 @@ const taxiRouter = {
   name: 'Taxi',
   meta: {
     title: 'Taxi',
-    icon: 'money'
+    icon: 'dashboard'
   },
   children: [
     {

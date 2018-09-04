@@ -13,8 +13,6 @@ public class BusinessPO {
 
     private Integer unitId;
 
-    private String numberPlate;
-
     private Date onTime;
 
     private Double onLon;

@@ -19,31 +19,6 @@ public class GeneralUtil {
     public static final int workday = 2; //工作日
     public static final int weekend = 3; //休息日
 
-    /**
-     * 得到大变小的钥匙
-     *
-     * @param timeslot
-     * @return
-     * @throws Exception
-     */
-    public static int[] getBigToSmallKey(int timeslot) throws Exception {
-        String readBigToSmallKey = "F:\\MDPGrid\\compress\\bigtosmall" + timeslot + ".txt";
-        int[] bigToSmallKey = FileIO.bufferedReaderAnArrayInt(readBigToSmallKey);//得到大变小的钥匙
-        return bigToSmallKey;
-    }
-
-    /**
-     * 得到小变大的钥匙
-     *
-     * @param timeslot
-     * @return
-     * @throws Exception
-     */
-    public static int[] getSmallToBigKey(int timeslot) throws Exception {
-        String readSmallToBigKey = "F:\\MDPGrid\\compress\\smalltobig" + timeslot + ".txt";
-        int[] smallToBigArray = FileIO.bufferedReaderAnArrayInt(readSmallToBigKey);   //得到小变大的钥匙，但是是从1开始的
-        return smallToBigArray;
-    }
 
     /**
      * 得到平时或周末的字符串
@@ -110,6 +85,20 @@ public class GeneralUtil {
         ResultVO resultVO = new ResultVO();
         resultVO.setCode(0);
         resultVO.setData(data);
+        resultVO.setMessage(message);
+        return resultVO;
+    }
+
+    /**
+     * 获取数据失败
+     * @param code
+     * @param message
+     * @return
+     */
+    public static ResultVO fail(Integer code, String message) {
+        ResultVO resultVO = new ResultVO();
+        resultVO.setCode(code);
+        resultVO.setData(null);
         resultVO.setMessage(message);
         return resultVO;
     }

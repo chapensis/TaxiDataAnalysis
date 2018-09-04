@@ -11,19 +11,17 @@ import java.util.Date;
 public class BusinessVO {
     private Integer businessId;
 
-    private Date stamp;
+    private Long stamp;
 
     private Integer unitId;
 
-    private String numberPlate;
-
-    private Date onTime;
+    private Long onTime;
 
     private Double onLon;
 
     private Double onLat;
 
-    private Date offTime;
+    private Long offTime;
 
     private Double offLon;
 
@@ -48,8 +46,10 @@ public class BusinessVO {
             return null;
         }
         BusinessVO vo = new BusinessVO();
-        BeanUtils.copyProperties(po, vo);
-
+        BeanUtils.copyProperties(po, vo, "stamp", "onTime", "offTime");
+        vo.setStamp(po.getStamp().getTime() / 1000);
+        vo.setOnTime(po.getOnTime().getTime() / 1000);
+        vo.setOffTime(po.getOffTime().getTime() / 1000);
         return vo;
     }
 

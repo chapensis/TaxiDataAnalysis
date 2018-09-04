@@ -2,7 +2,7 @@
 
 import Layout from '@/views/layout/Layout'
 
-const taxiRouter = {
+const roadRouter = {
   path: '/road',
   component: Layout,
   redirect: '/road/complex-road',
@@ -52,4 +52,4 @@ const taxiRouter = {
     }
   ]
 }
-export default taxiRouter
+export default roadRouter

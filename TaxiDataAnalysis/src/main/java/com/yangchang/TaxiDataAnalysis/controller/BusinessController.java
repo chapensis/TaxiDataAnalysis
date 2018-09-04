@@ -29,7 +29,6 @@ public class BusinessController {
      */
     @PostMapping("list")
     public ResultVO getBusinessList(@RequestBody BusinessVO businessVO) {
-        log.info("BusinessController getBusinessList: " + businessVO);
         List list = businessService.getBusinessList(businessVO);
         ResultVO result = GeneralUtil.success(list);
         return result;
@@ -43,7 +42,6 @@ public class BusinessController {
      */
     @PostMapping("total")
     public ResultVO getBusinessListNum(@RequestBody BusinessVO businessVO) {
-        log.info("BusinessController getTotalRoadNum: " + businessVO);
         Integer num = businessService.getBusinessListNum(businessVO);
         ResultVO result = GeneralUtil.success(new ArrayList() {
             {

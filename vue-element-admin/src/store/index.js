@@ -7,6 +7,7 @@ import tagsView from './modules/tagsView'
 import user from './modules/user'
 import taxi from './modules/taxi'
 import road from './modules/road'
+import business from './modules/business'
 import getters from './getters'
 import state from './state'
 
@@ -20,7 +21,8 @@ const store = new Vuex.Store({
     tagsView,
     user,
     taxi,
-    road
+    road,
+    business
   },
   getters,
   state

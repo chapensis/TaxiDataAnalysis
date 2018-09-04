@@ -21,14 +21,12 @@ public class UserController {
 
     @PostMapping("login")
     public UserVO login(@RequestBody UserVO user) {
-        log.info("UserController login params:" + user);
         UserVO resultUser = userService.getUserInfo();
         return resultUser;
     }
 
     @GetMapping("info")
     public UserVO info(@RequestParam("user") String user) {
-        log.info("UserController info params:" + user);
         UserVO resultUser = userService.getUserInfo();
         return resultUser;
     }

@@ -27,7 +27,6 @@ public class RoadController {
      */
     @PostMapping("list")
     public ResultVO getRoadList(@RequestBody RoadInfoVO roadInfoVO) {
-        log.info("RoadController getRoadList: " + roadInfoVO);
         List list = roadService.getRoadList(roadInfoVO);
         ResultVO result = GeneralUtil.success(list);
         return result;
@@ -35,7 +34,6 @@ public class RoadController {
 
     @PostMapping("total")
     public ResultVO getTotalRoadNum(@RequestBody RoadInfoVO roadInfoVO) {
-        log.info("RoadController getTotalRoadNum: " + roadInfoVO);
         List roadListInfoVOs = roadService.getTotalRoadNum(roadInfoVO);
         ResultVO result = GeneralUtil.success(roadListInfoVOs);
         return result;
