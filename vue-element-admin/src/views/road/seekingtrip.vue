@@ -45,20 +45,32 @@
           header-cell-class-name="align-center"
           style="width: 100%"
           @selection-change="handleSelectionChange">
+          <el-table-column type="expand">
+            <template slot-scope="props">
+              <el-form label-position="left" inline class="demo-table-expand">
+                <el-form-item label="起点路段Id">
+                  <span>{{ props.row.startRoadInfo.roadId }}</span>
+                </el-form-item>
+                <el-form-item label="终点路段Id">
+                  <span>{{ props.row.endRoadInfo.roadId }}</span>
+                </el-form-item>
+              </el-form>
+            </template>
+          </el-table-column>
           <el-table-column type="selection" width="55" />
           <el-table-column label="寻客Id" width="80">
             <template slot-scope="scope">
               <span>{{ scope.row.tripId }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="起点路段Id" width="120">
+          <el-table-column label="上车路段名" width="120">
             <template slot-scope="scope">
-              <span>{{ scope.row.startRoadInfo.roadId }}</span>
+              <span>{{ scope.row.startRoadInfo.roadName }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="终点路段Id" width="120">
+          <el-table-column label="下车路段名" width="120">
             <template slot-scope="scope">
-              <span>{{ scope.row.endRoadInfo.roadId }}</span>
+              <span>{{ scope.row.endRoadInfo.roadName }}</span>
             </template>
           </el-table-column>
           <el-table-column label="时间段" width="100">
@@ -169,10 +181,22 @@ export default {
             pageNum: this.pageNum,
             pageSize: this.pageSize
           },
-          timeslot: this.queryTimeslot
+          timeslot: this.queryTimeslot,
+          startRoadInfo: {
+            roadName: this.queryStartRoadName
+          },
+          endRoadInfo: {
+            roadName: this.queryEndRoadName
+          }
         }),
         this.getRoadSeekingTripListNum({
-          timeslot: this.queryTimeslot
+          timeslot: this.queryTimeslot,
+          startRoadInfo: {
+            roadName: this.queryStartRoadName
+          },
+          endRoadInfo: {
+            roadName: this.queryEndRoadName
+          }
         })
       ])
         .then(() => {
@@ -196,10 +220,22 @@ export default {
             pageNum: this.pageNum,
             pageSize: this.pageSize
           },
-          timeslot: this.queryTimeslot
+          timeslot: this.queryTimeslot,
+          startRoadInfo: {
+            roadName: this.queryStartRoadName
+          },
+          endRoadInfo: {
+            roadName: this.queryEndRoadName
+          }
         }),
         this.getRoadSeekingTripListNum({
-          timeslot: this.queryTimeslot
+          timeslot: this.queryTimeslot,
+          startRoadInfo: {
+            roadName: this.queryStartRoadName
+          },
+          endRoadInfo: {
+            roadName: this.queryEndRoadName
+          }
         })
       ])
         .then(() => {
@@ -214,20 +250,11 @@ export default {
     },
 
     showRoadDetail(row) {
-      this.$router.push({
-        name: 'RoadMapDetail',
-        params: [{
-          roadLon: row.roadLon,
-          roadLat: row.roadLat
-        }]
-      });
+      this.$message.info('功能正在开发中....');
     },
 
     showMultiRoadDetail() {
-      this.$router.push({
-        name: 'RoadMapDetail',
-        params: this.multipleSelectedPosition
-      });
+      this.$message.info('功能正在开发中....');
     },
 
     showRoadPanorama(row) {
@@ -249,10 +276,22 @@ export default {
             pageNum: this.pageNum,
             pageSize: this.pageSize
           },
-          timeslot: this.queryTimeslot
+          timeslot: this.queryTimeslot,
+          startRoadInfo: {
+            roadName: this.queryStartRoadName
+          },
+          endRoadInfo: {
+            roadName: this.queryEndRoadName
+          }
         }),
         this.getRoadSeekingTripListNum({
-          timeslot: this.queryTimeslot
+          timeslot: this.queryTimeslot,
+          startRoadInfo: {
+            roadName: this.queryStartRoadName
+          },
+          endRoadInfo: {
+            roadName: this.queryEndRoadName
+          }
         })
       ])
         .then(() => {
@@ -269,7 +308,7 @@ export default {
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style rel="stylesheet/scss" lang="scss" >
 #road-list {
   .road-list {
     margin: 50px;

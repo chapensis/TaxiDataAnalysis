@@ -12,10 +12,27 @@
         <el-button type="primary"
                    size="mini"
                    @click="filter">搜索</el-button>
+        <el-button type="success"
+                   size="mini"
+                   @click="addRoadData">添加</el-button>
         <el-button type="danger"
                    size="mini"
                    @click="showMultiRoadDetail">批量定位</el-button>
       </template>
+      <el-dialog
+        :visible.sync="dialogVisible"
+        :before-close="handleClose"
+        title="添加新路段">
+        <el-form ref="roadForm" :model="roadForm" label-width="80px">
+          <el-form-item label="路段名">
+            <el-input v-model="roadForm.roadName" />
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="dialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        </span>
+      </el-dialog>
       <div style="margin-top:15px;" />
       <template>
         <el-table
@@ -32,12 +49,12 @@
           style="width: 100%"
           @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="55" />
-          <el-table-column label="路段Id" width="180">
+          <el-table-column label="路段Id" width="80">
             <template slot-scope="scope">
               <span>{{ scope.row.roadId }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="路段名" width="180">
+          <el-table-column label="路段名" width="120">
             <template slot-scope="scope">
               <span>{{ scope.row.roadName }}</span>
             </template>
@@ -52,7 +69,7 @@
               <span>{{ scope.row.roadLat }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="路段长度(米)">
+          <el-table-column label="路段长度(米)" width="120">
             <template slot-scope="scope">
               <span>{{ scope.row.roadLength }}</span>
             </template>
@@ -62,13 +79,16 @@
               <span>{{ scope.row.roadTime }}</span>
             </template>
           </el-table-column>
-          <el-table-column fixed = "right" label = "操作" width = "180">
+          <el-table-column fixed = "right" label = "操作" width = "240">
             <template slot-scope="scope">
-              <el-button size="mini" type="danger" @click="showRoadDetail(scope.row)">
+              <el-button size="mini" type="primary" @click="showRoadDetail(scope.row)">
                 定位
               </el-button>
-              <el-button size="mini" type="warning" @click="showRoadPanorama(scope.row)">
+              <el-button size="mini" type="success" @click="showRoadPanorama(scope.row)">
                 全景
+              </el-button>
+              <el-button size="mini" type="danger" @click="deleteRoadData(scope.row)">
+                删除
               </el-button>
             </template>
           </el-table-column>
@@ -103,7 +123,11 @@ export default {
       pageSize: 10,
       isLoading: '',
       loadingText: '',
-      multipleSelectedPosition: []
+      multipleSelectedPosition: [],
+      dialogVisible: false,
+      roadForm: {
+        roadName: ''
+      }
     }
   },
   computed: {
@@ -195,6 +219,14 @@ export default {
         });
     },
 
+    addRoadData() {
+      this.dialogVisible = true;
+    },
+
+    deleteRoadData(row) {
+      this.$message.info('正在开发中...')
+    },
+
     showRoadDetail(row) {
       this.$router.push({
         name: 'RoadMapDetail',
@@ -206,6 +238,10 @@ export default {
     },
 
     showMultiRoadDetail() {
+      if (this.multipleSelectedPosition.length === 0) {
+        this.$message.warning('请先选择要定位的路段');
+        return;
+      }
       this.$router.push({
         name: 'RoadMapDetail',
         params: this.multipleSelectedPosition
@@ -251,7 +287,7 @@ export default {
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style rel="stylesheet/scss" lang="scss">
 #road-list {
   .road-list {
     margin: 50px;

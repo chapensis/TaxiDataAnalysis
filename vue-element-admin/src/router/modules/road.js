@@ -32,7 +32,7 @@ const roadRouter = {
     },
     {
       path: 'road-driving-trip-list',
-      component: () => import('@/views/road/index'),
+      component: () => import('@/views/road/drivingtrip'),
       name: 'RoadDrivingTripList',
       meta: { title: 'RoadDrivingTripList' }
     },

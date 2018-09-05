@@ -254,7 +254,7 @@ export default {
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style rel="stylesheet/scss" lang="scss" >
 #business-list {
   .business-list {
     margin: 50px;

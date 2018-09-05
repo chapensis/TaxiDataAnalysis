@@ -4,7 +4,9 @@
     <resultMap id="roadTripMap" type="com.yangchang.TaxiDataAnalysis.bean.po.RoadTripInfoPO">
         <id property="tripId" column="trip_id" />
         <result property="startRoadInfo.roadId" column="start_road_id" />
+        <result property="startRoadInfo.roadName" column="start_road_name" />
         <result property="endRoadInfo.roadId" column="end_road_id" />
+        <result property="endRoadInfo.roadName" column="end_road_name" />
         <result property="timeslot" column="timeslot" />
         <result property="totalTime" column="total_time" />
         <result property="totalMoney" column="total_money" />
@@ -13,14 +15,24 @@
 
     <select id="getRoadSeekingTripList" resultMap="roadTripMap">
         SELECT
-          trip_id, start_road_id, end_road_id, timeslot, total_seeking_time as total_time,
+          trip_id, start_road_id, r1.road_name as start_road_name,
+                   end_road_id, r2.road_name as end_road_name,
+          timeslot, total_seeking_time as total_time,
           total_money, total_num
         FROM
-          road_seeking_trip
+          road_seeking_trip r, road r1, road r2
         <where>
             <if test="timeslot != null and timeslot != ''">
-                and timeslot = #{timeslot}
+                timeslot = #{timeslot} AND
             </if>
+            <if test="startRoadInfo != null and startRoadInfo.roadName != null and startRoadInfo.roadName != ''">
+                r1.road_name like concat('%', #{startRoadInfo.roadName}, '%')  AND
+            </if>
+            <if test="endRoadInfo != null and endRoadInfo.roadName != null and endRoadInfo.roadName != ''">
+                r2.road_name like concat('%', #{endRoadInfo.roadName}, '%')  AND
+            </if>
+            r.start_road_id = r1.road_id AND
+            r.end_road_id = r2.road_id
         </where>
     </select>
 
