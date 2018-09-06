@@ -25,4 +25,35 @@
             </if>
         </where>
     </select>
+
+    <insert id="add" useGeneratedKeys="true" keyProperty="roadId">
+        insert into road (road_name, road_lon, road_lat, road_length, road_time)
+        VALUES (#{roadName}, #{roadLon}, #{roadLat}, #{roadLength}, #{roadTime})
+    </insert>
+
+    <delete id="delete">
+        delete from road where road_id = #{roadId}
+    </delete>
+
+    <update id="update">
+        update road set
+        <if test="roadName != null and roadName != ''">
+             road_name = #{roadName},
+        </if>
+        <if test="roadLon != null and roadLon != ''">
+             road_lon = #{roadLon},
+        </if>
+        <if test="roadLat != null and roadLat != ''">
+             road_lat = #{roadLat},
+        </if>
+        <if test="roadTime != null and roadTime != ''">
+             road_time = #{roadTime},
+        </if>
+        <if test="roadLength != null and roadLength != ''">
+             road_length = #{roadLength},
+        </if>
+        road_id = #{roadId}
+        where
+        road_id = #{roadId}
+    </update>
 </mapper>

@@ -20,6 +20,6 @@ public class ExceptionHandle {
     @ExceptionHandler(Exception.class)
     public ResultVO handleException(Exception e) {
         log.error("[Catch Exception]:" + e.getMessage());
-        return GeneralUtil.fail(1, e.getMessage());
+        return GeneralUtil.fail(1, "操作失败，详情请查看日志");
     }
 }

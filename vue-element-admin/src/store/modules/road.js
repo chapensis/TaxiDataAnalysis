@@ -36,6 +36,14 @@ const mutations = {
 
   setRoadDrivingTripListNum(state, data) {
     state.roadDrivingTripListNum = data[0];
+  },
+
+  updateRoadData(state, data) {
+    const index = state.roadList.findIndex(road => road.roadId === data.roadId);
+    if (index >= 0) {
+      const newRoadInfo = Object.assign({}, state.roadList[index], data);
+      state.roadList.splice(index, 1, newRoadInfo);
+    }
   }
 }
 
@@ -49,6 +57,20 @@ const actions = {
   getTotalRoadNum({ commit }, body) {
     return Road.getTotalRoadNum(body).then(response => {
       commit('setRoadTotalNum', response.data);
+    });
+  },
+
+  addRoad({ commit }, body) {
+    return Road.add(body);
+  },
+
+  deleteRoad({ commit }, body) {
+    return Road.delete(body);
+  },
+
+  updateRoad({ commit }, body) {
+    return Road.update(body).then(response => {
+      commit('updateRoadData', body);
     });
   },
 

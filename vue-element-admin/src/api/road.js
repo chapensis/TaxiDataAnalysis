@@ -15,6 +15,24 @@ export default {
     return api.fetch({ url: postUrl, method, body: condition })
   },
 
+  add(condition) {
+    const method = 'POST'
+    const postUrl = url + '/add'
+    return api.fetch({ url: postUrl, method, body: condition })
+  },
+
+  delete(condition) {
+    const method = 'POST'
+    const postUrl = url + '/delete'
+    return api.fetch({ url: postUrl, method, body: condition })
+  },
+
+  update(condition) {
+    const method = 'POST'
+    const postUrl = url + '/update'
+    return api.fetch({ url: postUrl, method, body: condition })
+  },
+
   getRoadSeekingTripList(condition) {
     const method = 'POST'
     const postUrl = urlRoadTrip + '/slist'

@@ -20,6 +20,7 @@
           :data="businessList"
           :element-loading-text="loadingText"
           :default-sort="{prop: 'businessId', order: 'descending'}"
+          element-loading-background="rgba(0, 0, 0, 0.5)"
           stripe
           border
           highlight-current-row

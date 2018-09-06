@@ -49,6 +49,44 @@ public class RoadService {
     }
 
     /**
+     * 添加新的路段
+     * @param roadInfoVO
+     * @return
+     */
+    public RoadInfoVO addRoad(RoadInfoVO roadInfoVO)
+    {
+        RoadInfoPO roadInfoPO = roadInfoVO.toPO();
+
+        roadInfoDao.add(roadInfoPO);
+        return RoadInfoVO.parseVO(roadInfoPO);
+    }
+
+    /**
+     * delete road
+     * @param roadInfoVO
+     * @return
+     */
+    public int deleteRoad(RoadInfoVO roadInfoVO)
+    {
+        RoadInfoPO roadInfoPO = roadInfoVO.toPO();
+        int result = roadInfoDao.delete(roadInfoPO);
+        return result;
+    }
+
+    /**
+     * delete road
+     * @param roadInfoVO
+     * @return
+     */
+    public int updateRoad(RoadInfoVO roadInfoVO)
+    {
+        RoadInfoPO roadInfoPO = roadInfoVO.toPO();
+        int result = roadInfoDao.update(roadInfoPO);
+        return result;
+    }
+
+
+    /**
      * 这个方法中用到了我们开头配置依赖的分页插件pagehelper
      * 很简单，只需要在service层传入参数，然后将参数传递给一个插件的一个静态方法即可；
      * pageNum 开始页数

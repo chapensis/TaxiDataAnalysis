@@ -36,7 +36,7 @@
           :element-loading-text="loadingText"
           :default-sort="{prop: 'tripId', order: 'descending'}"
           element-loading-spinner="el-icon-loading"
-          element-loading-background="rgba(0, 0, 0, 0.8)"
+          element-loading-background="rgba(0, 0, 0, 0.5)"
           stripe
           border
           highlight-current-row
