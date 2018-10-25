@@ -16,6 +16,11 @@ import java.util.Arrays;
 @Aspect
 public class ControllerAspect {
 
+    /**
+     * 切点，里面可以用execution指定切哪个方法，
+     * 也可以用annotation指定切添加了哪个注解声明的方法
+     * 也可以用within指定切哪些类
+     */
     @Pointcut("execution(public * com.yangchang.TaxiDataAnalysis.controller.*.*(..))")
     public void controllerPointCut() {
 

@@ -3,8 +3,10 @@ package com.yangchang.TaxiDataAnalysis.bean.po;
 import com.yangchang.TaxiDataAnalysis.bean.Pagination;
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class RoadInfoPO {
+public class RoadInfoPO implements Serializable {
     private Integer roadId;
     private String roadName;
     private Double roadLon;
