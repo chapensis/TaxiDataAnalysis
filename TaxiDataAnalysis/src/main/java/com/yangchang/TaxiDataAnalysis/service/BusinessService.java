@@ -2,6 +2,7 @@ package com.yangchang.TaxiDataAnalysis.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.yangchang.TaxiDataAnalysis.bean.Pagination;
 import com.yangchang.TaxiDataAnalysis.bean.po.BusinessPO;
 import com.yangchang.TaxiDataAnalysis.bean.vo.BusinessVO;
 import com.yangchang.TaxiDataAnalysis.dao.BusinessDao;
@@ -23,27 +24,22 @@ public class BusinessService {
      *
      * @return List<BusinessVO>
      */
-    public List<BusinessVO> getBusinessList(BusinessVO businessVO) {
+    public List<BusinessVO> listBusiness(BusinessVO businessVO) {
         BusinessPO businessPO = businessVO.toPO();
 
         PageInfo<BusinessPO> businessPageInfo = getBusinessListByPageHelper(businessPO);
+
+        Long total = businessPageInfo.getTotal();
+        Pagination pagination = new Pagination();
+        pagination.setTotal(total);
+
         List<BusinessPO> businessPOs = businessPageInfo.getList();
-        List<BusinessVO> businessVOs = businessPOs.stream().map(x -> BusinessVO.parseVO(x)).collect(Collectors.toList());
+        List<BusinessVO> businessVOs = businessPOs.stream().map(x -> {
+            BusinessVO businessReusltVO = BusinessVO.parseVO(x);
+            businessReusltVO.setPagination(pagination);
+            return businessReusltVO;
+        }).collect(Collectors.toList());
         return businessVOs;
-    }
-    
-
-    /**
-     * 根据条件查询交易集合的信息，比例：集合的总数量等
-     *
-     * @param businessVO
-     * @return
-     */
-    public Integer getBusinessListNum(BusinessVO businessVO) {
-        BusinessPO businessPO = businessVO.toPO();
-
-        Integer num = businessDao.getBusinessListNum(businessPO);
-        return num;
     }
     
     /**
@@ -58,7 +54,7 @@ public class BusinessService {
                 businessPO.getPagination().getPageSize());
         // 先选择出指定的数据
         List<BusinessPO> businessPOs = businessDao.getBusinessList(businessPO);
-        log.info("seleced getBusinessList size: " + businessPOs.size());
+        log.info("seleced listBusiness size: " + businessPOs.size());
         PageInfo result = new PageInfo(businessPOs);
         return result;
     }

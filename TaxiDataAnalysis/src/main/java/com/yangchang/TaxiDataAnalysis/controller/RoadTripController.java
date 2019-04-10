@@ -1,9 +1,7 @@
 package com.yangchang.TaxiDataAnalysis.controller;
 
 import com.yangchang.TaxiDataAnalysis.bean.vo.ResultVO;
-import com.yangchang.TaxiDataAnalysis.bean.vo.RoadInfoVO;
 import com.yangchang.TaxiDataAnalysis.bean.vo.RoadTripInfoVO;
-import com.yangchang.TaxiDataAnalysis.service.RoadService;
 import com.yangchang.TaxiDataAnalysis.service.RoadTripService;
 import com.yangchang.TaxiDataAnalysis.tools.GeneralUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -30,8 +27,8 @@ public class RoadTripController {
      * @return
      */
     @PostMapping("slist")
-    public ResultVO getRoadSeekingTripList(@RequestBody RoadTripInfoVO roadTripInfoVO) {
-        List list = roadTripService.getRoadSeekingTripList(roadTripInfoVO);
+    public ResultVO listRoadSeekingTrips(@RequestBody RoadTripInfoVO roadTripInfoVO) {
+        List list = roadTripService.listRoadSeekingTrips(roadTripInfoVO);
         ResultVO result = GeneralUtil.success(list);
         return result;
     }
@@ -43,43 +40,9 @@ public class RoadTripController {
      * @return ResultVO
      */
     @PostMapping("dlist")
-    public ResultVO getRoadDrivingTripList(@RequestBody RoadTripInfoVO roadTripInfoVO) {
-        List list = roadTripService.getRoadDrivingTripList(roadTripInfoVO);
+    public ResultVO listRoadDrivingTrips(@RequestBody RoadTripInfoVO roadTripInfoVO) {
+        List list = roadTripService.listRoadDrivingTrips(roadTripInfoVO);
         ResultVO result = GeneralUtil.success(list);
-        return result;
-    }
-
-    /**
-     * 获得路段寻客trip信息总数
-     *
-     * @param roadTripInfoVO
-     * @return ResultVO
-     */
-    @PostMapping("stotal")
-    public ResultVO getRoadSeekingTripListNum(@RequestBody RoadTripInfoVO roadTripInfoVO) {
-        Integer num = roadTripService.getRoadSeekingTripListNum(roadTripInfoVO);
-        ResultVO result = GeneralUtil.success(new ArrayList() {
-            {
-                add(num);
-            }
-        });
-        return result;
-    }
-
-    /**
-     * 获得路段载客trip信息总数
-     *
-     * @param roadTripInfoVO
-     * @return
-     */
-    @PostMapping("dtotal")
-    public ResultVO getRoadDrivingTripListNum(@RequestBody RoadTripInfoVO roadTripInfoVO) {
-        Integer num = roadTripService.getRoadDrivingTripListNum(roadTripInfoVO);
-        ResultVO result = GeneralUtil.success(new ArrayList() {
-            {
-                add(num);
-            }
-        });
         return result;
     }
 }

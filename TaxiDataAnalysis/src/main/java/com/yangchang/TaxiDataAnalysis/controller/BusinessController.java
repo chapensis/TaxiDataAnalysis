@@ -28,26 +28,9 @@ public class BusinessController {
      * @return ResultVO
      */
     @PostMapping("list")
-    public ResultVO getBusinessList(@RequestBody BusinessVO businessVO) {
-        List list = businessService.getBusinessList(businessVO);
+    public ResultVO listBusiness(@RequestBody BusinessVO businessVO) {
+        List list = businessService.listBusiness(businessVO);
         ResultVO result = GeneralUtil.success(list);
-        return result;
-    }
-
-    /**
-     * 获得交易总数量
-     *
-     * @param businessVO
-     * @return
-     */
-    @PostMapping("total")
-    public ResultVO getBusinessListNum(@RequestBody BusinessVO businessVO) {
-        Integer num = businessService.getBusinessListNum(businessVO);
-        ResultVO result = GeneralUtil.success(new ArrayList() {
-            {
-                add(num);
-            }
-        });
         return result;
     }
 }

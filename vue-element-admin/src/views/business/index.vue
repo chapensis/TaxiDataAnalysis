@@ -98,7 +98,7 @@
         </el-table>
       </template>
       <el-pagination
-        :total="businessListNum"
+        :total="businessList && businessList.length > 0 ? businessList[0].pagination.total : 0"
         :current-page="pageNum"
         :page-sizes="[5, 10, 15, 20]"
         :page-size="pageSize"
@@ -129,53 +129,25 @@ export default {
     }
   },
   computed: {
-    ...mapState('business', ['businessList', 'businessListNum'])
+    ...mapState('business', ['businessList'])
   },
   created() {
-    this.loadingText = '正在加载交易数据';
-    this.isLoading = true;
-    Promise.all([
+    this.handleGetBusinessList();
+  },
+  methods: {
+    ...mapActions('business', ['getBusinessList']),
+    handleSetLineChartData(type) {
+      this.$emit('handleSetLineChartData', type)
+    },
+    handleGetBusinessList() {
+      this.loadingText = '正在加载交易数据';
+      this.isLoading = true;
       this.getBusinessList({
         pagination: {
           pageNum: this.pageNum,
           pageSize: this.pageSize
         }
-      }),
-      this.getTotalBusinessNum({
-        businessName: this.queryBusinessName
       })
-    ])
-      .then(() => {
-        this.isLoading = false
-      })
-      .catch(err => {
-        this.isLoading = false
-        if (typeof err === 'string' && err !== 'cancel') {
-          this.$message.error(err)
-        }
-      });
-  },
-  methods: {
-    ...mapActions('business', ['getBusinessList', 'getTotalBusinessNum']),
-    handleSetLineChartData(type) {
-      this.$emit('handleSetLineChartData', type)
-    },
-    handleSizeChange(val) {
-      this.loadingText = '正在加载交易数据'
-      this.isLoading = true
-      this.pageSize = val;
-      Promise.all([
-        this.getBusinessList({
-          pagination: {
-            pageNum: this.pageNum,
-            pageSize: this.pageSize
-          },
-          businessName: this.queryBusinessName
-        }),
-        this.getTotalBusinessNum({
-          businessName: this.queryBusinessName
-        })
-      ])
         .then(() => {
           this.isLoading = false
         })
@@ -185,33 +157,15 @@ export default {
             this.$message.error(err)
           }
         });
+    },
+    handleSizeChange(val) {
+      this.pageSize = val;
+      this.handleGetBusinessList();
     },
 
     handleCurrentChange(val) {
-      this.loadingText = '正在加载交易数据';
-      this.isLoading = true;
       this.pageNum = val;
-      Promise.all([
-        this.getBusinessList({
-          pagination: {
-            pageNum: this.pageNum,
-            pageSize: this.pageSize
-          },
-          businessName: this.queryBusinessName
-        }),
-        this.getTotalBusinessNum({
-          businessName: this.queryBusinessName
-        })
-      ])
-        .then(() => {
-          this.isLoading = false
-        })
-        .catch(err => {
-          this.isLoading = false
-          if (typeof err === 'string' && err !== 'cancel') {
-            this.$message.error(err)
-          }
-        });
+      this.handleGetBusinessList();
     },
 
     showBusinessDetail(row) {
@@ -229,18 +183,13 @@ export default {
     filter() {
       this.loadingText = '正在加载交易数据'
       this.isLoading = true
-      Promise.all([
-        this.getBusinessList({
-          pagination: {
-            pageNum: this.pageNum,
-            pageSize: this.pageSize
-          },
-          businessName: this.queryBusinessName
-        }),
-        this.getTotalBusinessNum({
-          businessName: this.queryBusinessName
-        })
-      ])
+      this.getBusinessList({
+        pagination: {
+          pageNum: this.pageNum,
+          pageSize: this.pageSize
+        },
+        businessName: this.queryBusinessName
+      })
         .then(() => {
           this.isLoading = false
         })

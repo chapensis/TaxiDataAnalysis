@@ -43,7 +43,7 @@
           fit
           row-class-name="align-center"
           header-cell-class-name="align-center"
-          style="width: 100%"
+          style="width: 80%"
           @selection-change="handleSelectionChange">
           <el-table-column type="expand">
             <template slot-scope="props">
@@ -103,7 +103,7 @@
         </el-table>
       </template>
       <el-pagination
-        :total="roadDrivingTripListNum"
+        :total="roadDrivingTripList && roadDrivingTripList.length > 0 ? roadDrivingTripList[0].pagination.total : 0"
         :current-page="pageNum"
         :page-sizes="[5, 10, 15, 20]"
         :page-size="pageSize"
@@ -137,68 +137,28 @@ export default {
     }
   },
   computed: {
-    ...mapState('road', ['roadDrivingTripList', 'roadDrivingTripListNum'])
+    ...mapState('road', ['roadDrivingTripList'])
   },
   created() {
-    this.loadingText = '正在加载载客路段数据';
-    this.isLoading = true;
-    Promise.all([
-      this.getRoadDrivingTripList({
-        pagination: {
-          pageNum: this.pageNum,
-          pageSize: this.pageSize
-        }
-      }),
-      this.getRoadDrivingTripListNum({
-        timeslot: this.queryTimeslot
-      })
-    ])
-      .then(() => {
-        this.isLoading = false
-      })
-      .catch(err => {
-        this.isLoading = false
-        if (typeof err === 'string' && err !== 'cancel') {
-          this.$message.error(err)
-        }
-      });
+    this.handleGetRoadDrivingTripList();
   },
   methods: {
-    ...mapActions('road', ['getRoadDrivingTripList', 'getRoadDrivingTripListNum']),
+    ...mapActions('road', ['getRoadDrivingTripList']),
     handleSetLineChartData(type) {
       this.$emit('handleSetLineChartData', type)
     },
     handleSelectionChange(val) {
       this.multipleSelectedPosition = val;
     },
-    handleSizeChange(val) {
-      this.loadingText = '正在加载载客路段数据'
-      this.isLoading = true
-      this.pageSize = val;
-      Promise.all([
-        this.getRoadDrivingTripList({
-          pagination: {
-            pageNum: this.pageNum,
-            pageSize: this.pageSize
-          },
-          timeslot: this.queryTimeslot,
-          startRoadInfo: {
-            roadName: this.queryStartRoadName
-          },
-          endRoadInfo: {
-            roadName: this.queryEndRoadName
-          }
-        }),
-        this.getRoadDrivingTripListNum({
-          timeslot: this.queryTimeslot,
-          startRoadInfo: {
-            roadName: this.queryStartRoadName
-          },
-          endRoadInfo: {
-            roadName: this.queryEndRoadName
-          }
-        })
-      ])
+    handleGetRoadDrivingTripList() {
+      this.loadingText = '正在加载载客路段数据';
+      this.isLoading = true;
+      this.getRoadDrivingTripList({
+        pagination: {
+          pageNum: this.pageNum,
+          pageSize: this.pageSize
+        }
+      })
         .then(() => {
           this.isLoading = false
         })
@@ -209,44 +169,14 @@ export default {
           }
         });
     },
+    handleSizeChange(val) {
+      this.pageSize = val;
+      this.handleGetRoadDrivingTripList();
+    },
 
     handleCurrentChange(val) {
-      this.loadingText = '正在加载载客路段数据';
-      this.isLoading = true;
       this.pageNum = val;
-      Promise.all([
-        this.getRoadDrivingTripList({
-          pagination: {
-            pageNum: this.pageNum,
-            pageSize: this.pageSize
-          },
-          timeslot: this.queryTimeslot,
-          startRoadInfo: {
-            roadName: this.queryStartRoadName
-          },
-          endRoadInfo: {
-            roadName: this.queryEndRoadName
-          }
-        }),
-        this.getRoadDrivingTripListNum({
-          timeslot: this.queryTimeslot,
-          startRoadInfo: {
-            roadName: this.queryStartRoadName
-          },
-          endRoadInfo: {
-            roadName: this.queryEndRoadName
-          }
-        })
-      ])
-        .then(() => {
-          this.isLoading = false
-        })
-        .catch(err => {
-          this.isLoading = false
-          if (typeof err === 'string' && err !== 'cancel') {
-            this.$message.error(err)
-          }
-        });
+      this.handleGetRoadDrivingTripList();
     },
 
     showRoadDetail(row) {
@@ -270,30 +200,19 @@ export default {
     filter() {
       this.loadingText = '正在加载载客路段数据'
       this.isLoading = true
-      Promise.all([
-        this.getRoadDrivingTripList({
-          pagination: {
-            pageNum: this.pageNum,
-            pageSize: this.pageSize
-          },
-          timeslot: this.queryTimeslot,
-          startRoadInfo: {
-            roadName: this.queryStartRoadName
-          },
-          endRoadInfo: {
-            roadName: this.queryEndRoadName
-          }
-        }),
-        this.getRoadDrivingTripListNum({
-          timeslot: this.queryTimeslot,
-          startRoadInfo: {
-            roadName: this.queryStartRoadName
-          },
-          endRoadInfo: {
-            roadName: this.queryEndRoadName
-          }
-        })
-      ])
+      this.getRoadDrivingTripList({
+        pagination: {
+          pageNum: this.pageNum,
+          pageSize: this.pageSize
+        },
+        timeslot: this.queryTimeslot,
+        startRoadInfo: {
+          roadName: this.queryStartRoadName
+        },
+        endRoadInfo: {
+          roadName: this.queryEndRoadName
+        }
+      })
         .then(() => {
           this.isLoading = false
         })

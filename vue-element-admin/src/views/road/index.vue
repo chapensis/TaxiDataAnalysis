@@ -65,7 +65,7 @@
           fit
           row-class-name="align-center"
           header-cell-class-name="align-center"
-          style="width: 100%"
+          style="width: 80%"
           @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="55" />
           <el-table-column label="路段Id" width="80">
@@ -117,7 +117,7 @@
         </el-table>
       </template>
       <el-pagination
-        :total="roadListNum"
+        :total="roadList && roadList.length > 0 ? roadList[0].pagination.total : 0"
         :current-page="pageNum"
         :page-sizes="[5, 10, 15, 20]"
         :page-size="pageSize"
@@ -184,22 +184,17 @@ export default {
     }
   },
   computed: {
-    ...mapState('road', ['roadList', 'roadListNum'])
+    ...mapState('road', ['roadList'])
   },
   created() {
     this.loadingText = '正在加载路段数据';
     this.isLoading = true;
-    Promise.all([
-      this.getRoadList({
-        pagination: {
-          pageNum: this.pageNum,
-          pageSize: this.pageSize
-        }
-      }),
-      this.getTotalRoadNum({
-        roadName: this.queryRoadName
-      })
-    ])
+    this.getRoadList({
+      pagination: {
+        pageNum: this.pageNum,
+        pageSize: this.pageSize
+      }
+    })
       .then(() => {
         this.isLoading = false
       })
@@ -211,29 +206,23 @@ export default {
       });
   },
   methods: {
-    ...mapActions('road', ['getRoadList', 'getTotalRoadNum', 'addRoad', 'deleteRoad', 'updateRoad']),
+    ...mapActions('road', ['getRoadList', 'addRoad', 'deleteRoad', 'updateRoad']),
     handleSetLineChartData(type) {
       this.$emit('handleSetLineChartData', type)
     },
     handleSelectionChange(val) {
       this.multipleSelectedPosition = val;
     },
-    handleSizeChange(val) {
+    handleGetRoadList() {
       this.loadingText = '正在加载路段数据'
       this.isLoading = true
-      this.pageSize = val;
-      Promise.all([
-        this.getRoadList({
-          pagination: {
-            pageNum: this.pageNum,
-            pageSize: this.pageSize
-          },
-          roadName: this.queryRoadName
-        }),
-        this.getTotalRoadNum({
-          roadName: this.queryRoadName
-        })
-      ])
+      this.getRoadList({
+        pagination: {
+          pageNum: this.pageNum,
+          pageSize: this.pageSize
+        },
+        roadName: this.queryRoadName
+      })
         .then(() => {
           this.isLoading = false
         })
@@ -244,32 +233,14 @@ export default {
           }
         });
     },
+    handleSizeChange(val) {
+      this.pageSize = val;
+      this.handleGetRoadList();
+    },
 
     handleCurrentChange(val) {
-      this.loadingText = '正在加载路段数据';
-      this.isLoading = true;
       this.pageNum = val;
-      Promise.all([
-        this.getRoadList({
-          pagination: {
-            pageNum: this.pageNum,
-            pageSize: this.pageSize
-          },
-          roadName: this.queryRoadName
-        }),
-        this.getTotalRoadNum({
-          roadName: this.queryRoadName
-        })
-      ])
-        .then(() => {
-          this.isLoading = false
-        })
-        .catch(err => {
-          this.isLoading = false
-          if (typeof err === 'string' && err !== 'cancel') {
-            this.$message.error(err)
-          }
-        });
+      this.handleGetRoadList();
     },
 
     // only show dialogVisible
@@ -387,30 +358,9 @@ export default {
       });
     },
 
+    // 路段信息过滤
     filter() {
-      this.loadingText = '正在加载路段数据'
-      this.isLoading = true
-      Promise.all([
-        this.getRoadList({
-          pagination: {
-            pageNum: this.pageNum,
-            pageSize: this.pageSize
-          },
-          roadName: this.queryRoadName
-        }),
-        this.getTotalRoadNum({
-          roadName: this.queryRoadName
-        })
-      ])
-        .then(() => {
-          this.isLoading = false
-        })
-        .catch(err => {
-          this.isLoading = false
-          if (typeof err === 'string' && err !== 'cancel') {
-            this.$message.error(err)
-          }
-        });
+      this.handleGetRoadList();
     }
   }
 }

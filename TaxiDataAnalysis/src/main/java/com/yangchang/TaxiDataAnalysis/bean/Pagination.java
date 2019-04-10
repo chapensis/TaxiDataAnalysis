@@ -6,4 +6,5 @@ import lombok.Data;
 public class Pagination {
     private int pageNum;
     private int pageSize;
+    private Long total;
 }

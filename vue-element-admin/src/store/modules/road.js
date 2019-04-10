@@ -2,11 +2,8 @@ import Road from '@/api/road';
 
 const state = {
   roadList: [],
-  roadListNum: 0,
   roadSeekingTripList: [],
-  roadSeekingTripListNum: 0,
-  roadDrivingTripList: [],
-  roadDrivingTripListNum: 0
+  roadDrivingTripList: []
 }
 
 const getters = {
@@ -18,24 +15,12 @@ const mutations = {
     state.roadList = roadList;
   },
 
-  setRoadTotalNum(state, data) {
-    state.roadListNum = data[0].roadListNum;
-  },
-
   setRoadSeekingTripList(state, roadSeekingTripList) {
     state.roadSeekingTripList = roadSeekingTripList;
   },
 
-  setRoadSeekingTripListNum(state, data) {
-    state.roadSeekingTripListNum = data[0];
-  },
-
   setRoadDrivingTripList(state, roadDrivingTripList) {
     state.roadDrivingTripList = roadDrivingTripList;
-  },
-
-  setRoadDrivingTripListNum(state, data) {
-    state.roadDrivingTripListNum = data[0];
   },
 
   updateRoadData(state, data) {
@@ -51,12 +36,6 @@ const actions = {
   getRoadList({ commit }, body) {
     return Road.get(body).then(response => {
       commit('setRoadInfo', response.data);
-    });
-  },
-
-  getTotalRoadNum({ commit }, body) {
-    return Road.getTotalRoadNum(body).then(response => {
-      commit('setRoadTotalNum', response.data);
     });
   },
 
@@ -80,21 +59,9 @@ const actions = {
     });
   },
 
-  getRoadSeekingTripListNum({ commit }, body) {
-    return Road.getRoadSeekingTripListNum(body).then(response => {
-      commit('setRoadSeekingTripListNum', response.data);
-    });
-  },
-
   getRoadDrivingTripList({ commit }, body) {
-    return Road.getRoadSeekingTripList(body).then(response => {
+    return Road.getRoadDrivingTripList(body).then(response => {
       commit('setRoadDrivingTripList', response.data);
-    });
-  },
-
-  getRoadDrivingTripListNum({ commit }, body) {
-    return Road.getRoadSeekingTripListNum(body).then(response => {
-      commit('setRoadDrivingTripListNum', response.data);
     });
   }
 }

@@ -26,22 +26,9 @@ public class RoadController {
      * @return
      */
     @PostMapping("list")
-    public ResultVO getRoadList(@RequestBody RoadInfoVO roadInfoVO) {
-        List list = roadService.getRoadList(roadInfoVO);
+    public ResultVO listRoads(@RequestBody RoadInfoVO roadInfoVO) {
+        List list = roadService.listRoads(roadInfoVO);
         ResultVO result = GeneralUtil.success(list);
-        return result;
-    }
-
-    /**
-     * 获得路段总数
-     *
-     * @param roadInfoVO
-     * @return
-     */
-    @PostMapping("total")
-    public ResultVO getTotalRoadNum(@RequestBody RoadInfoVO roadInfoVO) {
-        List roadListInfoVOs = roadService.getTotalRoadNum(roadInfoVO);
-        ResultVO result = GeneralUtil.success(roadListInfoVOs);
         return result;
     }
 

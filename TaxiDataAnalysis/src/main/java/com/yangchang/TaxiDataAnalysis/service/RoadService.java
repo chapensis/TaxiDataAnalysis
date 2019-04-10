@@ -2,6 +2,7 @@ package com.yangchang.TaxiDataAnalysis.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.yangchang.TaxiDataAnalysis.bean.Pagination;
 import com.yangchang.TaxiDataAnalysis.bean.po.RoadInfoPO;
 import com.yangchang.TaxiDataAnalysis.bean.po.RoadListInfoPO;
 import com.yangchang.TaxiDataAnalysis.bean.vo.RoadInfoVO;
@@ -25,36 +26,31 @@ public class RoadService {
      *
      * @return List<RoadInfoVO>
      */
-    public List<RoadInfoVO> getRoadList(RoadInfoVO roadInfoVO) {
+    public List<RoadInfoVO> listRoads(RoadInfoVO roadInfoVO) {
         RoadInfoPO roadInfoPO = roadInfoVO.toPO();
 
-        PageInfo<RoadInfoPO> roadInfoPOPageInfo = getRoadInfosByPageHelper(roadInfoPO);
-        List<RoadInfoPO> roadInfoPOs = roadInfoPOPageInfo.getList();
-        List<RoadInfoVO> roadInfoVOs = roadInfoPOs.stream().map(x -> RoadInfoVO.parseVO(x)).collect(Collectors.toList());
+        PageInfo<RoadInfoPO> roadPageInfo = getRoadInfosByPageHelper(roadInfoPO);
+
+        Long total = roadPageInfo.getTotal();
+        Pagination pagination = new Pagination();
+        pagination.setTotal(total);
+
+        List<RoadInfoPO> roadInfoPOs = roadPageInfo.getList();
+        List<RoadInfoVO> roadInfoVOs = roadInfoPOs.stream().map(x -> {
+            RoadInfoVO roadInfoResultVO = RoadInfoVO.parseVO(x);
+            roadInfoResultVO.setPagination(pagination);
+            return roadInfoResultVO;
+        }).collect(Collectors.toList());
         return roadInfoVOs;
     }
 
     /**
-     * 根据条件查询路段集合的信息，比例：集合的总数量等
+     * 添加新的路段
      *
      * @param roadInfoVO
      * @return
      */
-    public List<RoadListInfoVO> getTotalRoadNum(RoadInfoVO roadInfoVO) {
-        RoadInfoPO roadInfoPO = roadInfoVO.toPO();
-
-        List<RoadListInfoPO> roadListInfoPOS = roadInfoDao.getRoadListInfo(roadInfoPO);
-        List<RoadListInfoVO> roadListInfoVOs = roadListInfoPOS.stream().map(x -> RoadListInfoVO.parseVO(x)).collect(Collectors.toList());
-        return roadListInfoVOs;
-    }
-
-    /**
-     * 添加新的路段
-     * @param roadInfoVO
-     * @return
-     */
-    public RoadInfoVO addRoad(RoadInfoVO roadInfoVO)
-    {
+    public RoadInfoVO addRoad(RoadInfoVO roadInfoVO) {
         RoadInfoPO roadInfoPO = roadInfoVO.toPO();
 
         roadInfoDao.add(roadInfoPO);
@@ -63,11 +59,11 @@ public class RoadService {
 
     /**
      * delete road
+     *
      * @param roadInfoVO
      * @return
      */
-    public int deleteRoad(RoadInfoVO roadInfoVO)
-    {
+    public int deleteRoad(RoadInfoVO roadInfoVO) {
         RoadInfoPO roadInfoPO = roadInfoVO.toPO();
         int result = roadInfoDao.delete(roadInfoPO);
         return result;
@@ -75,11 +71,11 @@ public class RoadService {
 
     /**
      * delete road
+     *
      * @param roadInfoVO
      * @return
      */
-    public int updateRoad(RoadInfoVO roadInfoVO)
-    {
+    public int updateRoad(RoadInfoVO roadInfoVO) {
         RoadInfoPO roadInfoPO = roadInfoVO.toPO();
         int result = roadInfoDao.update(roadInfoPO);
         return result;

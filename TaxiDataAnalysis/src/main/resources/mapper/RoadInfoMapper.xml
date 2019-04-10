@@ -14,6 +14,7 @@
         </where>
     </select>
 
+    <!--自动插件可以查询总数以后，这个sql就暂时可以不需要了-->
     <select id="getRoadListInfo" resultType="com.yangchang.TaxiDataAnalysis.bean.po.RoadListInfoPO">
         SELECT
           COUNT(road_id) as roadListNum

@@ -2,6 +2,7 @@ package com.yangchang.TaxiDataAnalysis.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.yangchang.TaxiDataAnalysis.bean.Pagination;
 import com.yangchang.TaxiDataAnalysis.bean.po.RoadTripInfoPO;
 import com.yangchang.TaxiDataAnalysis.bean.vo.RoadTripInfoVO;
 import com.yangchang.TaxiDataAnalysis.dao.RoadTripInfoDao;
@@ -23,12 +24,21 @@ public class RoadTripService {
      *
      * @return List<RoadTripInfoVO>
      */
-    public List<RoadTripInfoVO> getRoadSeekingTripList(RoadTripInfoVO roadTripInfoVO) {
+    public List<RoadTripInfoVO> listRoadSeekingTrips(RoadTripInfoVO roadTripInfoVO) {
         RoadTripInfoPO roadTripInfoPO = roadTripInfoVO.toPO();
 
-        PageInfo<RoadTripInfoPO> roadTripInfoPageInfo = getRoadSeekingTripByPageHelper(roadTripInfoPO);
-        List<RoadTripInfoPO> roadTripInfoPOs = roadTripInfoPageInfo.getList();
-        List<RoadTripInfoVO> roadTripInfoVOs = roadTripInfoPOs.stream().map(x -> RoadTripInfoVO.parseVO(x)).collect(Collectors.toList());
+        PageInfo<RoadTripInfoPO> roadTripPageInfo = getRoadSeekingTripByPageHelper(roadTripInfoPO);
+        List<RoadTripInfoPO> roadTripInfoPOs = roadTripPageInfo.getList();
+
+        Long total = roadTripPageInfo.getTotal();
+        Pagination pagination = new Pagination();
+        pagination.setTotal(total);
+
+        List<RoadTripInfoVO> roadTripInfoVOs = roadTripInfoPOs.stream().map(x -> {
+            RoadTripInfoVO roadTripResultInfoVO = RoadTripInfoVO.parseVO(x);
+            roadTripResultInfoVO.setPagination(pagination);
+            return roadTripResultInfoVO;
+        }).collect(Collectors.toList());
         return roadTripInfoVOs;
     }
 
@@ -37,39 +47,22 @@ public class RoadTripService {
      *
      * @return List<RoadTripInfoVO>
      */
-    public List<RoadTripInfoVO> getRoadDrivingTripList(RoadTripInfoVO roadTripInfoVO) {
+    public List<RoadTripInfoVO> listRoadDrivingTrips(RoadTripInfoVO roadTripInfoVO) {
         RoadTripInfoPO roadTripInfoPO = roadTripInfoVO.toPO();
 
-        PageInfo<RoadTripInfoPO> roadTripInfoPageInfo = getRoadDrivingTripByPageHelper(roadTripInfoPO);
-        List<RoadTripInfoPO> roadTripInfoPOs = roadTripInfoPageInfo.getList();
-        List<RoadTripInfoVO> roadTripInfoVOs = roadTripInfoPOs.stream().map(x -> RoadTripInfoVO.parseVO(x)).collect(Collectors.toList());
+        PageInfo<RoadTripInfoPO> roadTripPageInfo = getRoadDrivingTripByPageHelper(roadTripInfoPO);
+
+        Long total = roadTripPageInfo.getTotal();
+        Pagination pagination = new Pagination();
+        pagination.setTotal(total);
+
+        List<RoadTripInfoPO> roadTripInfoPOs = roadTripPageInfo.getList();
+        List<RoadTripInfoVO> roadTripInfoVOs = roadTripInfoPOs.stream().map(x -> {
+            RoadTripInfoVO roadTripResultInfoVO = RoadTripInfoVO.parseVO(x);
+            roadTripResultInfoVO.setPagination(pagination);
+            return roadTripResultInfoVO;
+        }).collect(Collectors.toList());
         return roadTripInfoVOs;
-    }
-
-    /**
-     * 根据条件查询路段集合的信息，比例：集合的总数量等
-     *
-     * @param roadTripInfoVO
-     * @return
-     */
-    public Integer getRoadSeekingTripListNum(RoadTripInfoVO roadTripInfoVO) {
-        RoadTripInfoPO roadTripInfoPO = roadTripInfoVO.toPO();
-
-        Integer num = roadTripInfoDao.getRoadSeekingTripListNum(roadTripInfoPO);
-        return num;
-    }
-
-    /**
-     * 根据条件查询路段集合的信息，比例：集合的总数量等
-     *
-     * @param roadTripInfoVO
-     * @return
-     */
-    public Integer getRoadDrivingTripListNum(RoadTripInfoVO roadTripInfoVO) {
-        RoadTripInfoPO roadTripInfoPO = roadTripInfoVO.toPO();
-
-        Integer num = roadTripInfoDao.getRoadDrivingTripListNum(roadTripInfoPO);
-        return num;
     }
 
     /**
