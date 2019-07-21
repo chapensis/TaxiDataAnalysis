@@ -14,10 +14,17 @@ public class GeneralUtil {
     /**
      * 所有時間
      */
-    public static final int workAndWeek = 1; //所有時間
+    public static final int workAndWeek = 1;
 
-    public static final int workday = 2; //工作日
-    public static final int weekend = 3; //休息日
+    /**
+     * 工作日
+     */
+    public static final int workday = 2;
+
+    /**
+     * 休息日
+     */
+    public static final int weekend = 3;
 
 
     /**
@@ -28,14 +35,17 @@ public class GeneralUtil {
      */
     public static String getWeekendOrWorkday(int week) {
         String weekendOrworkday = "";
-        if (week == workAndWeek) // 全周
+        // 全周
+        if (week == workAndWeek)
         {
             weekendOrworkday = "workAndWeek";
-        } else if (week == workday) // 工作日
+        } else if (week == workday)
         {
+            // 工作日
             weekendOrworkday = "workday";
-        } else if (week == weekend)// 休息日
+        } else if (week == weekend)
         {
+            // 休息日
             weekendOrworkday = "weekend";
         }
         return weekendOrworkday;
@@ -49,14 +59,17 @@ public class GeneralUtil {
      */
     public static int getTotalDayByWeek(int week) {
         int totalDay = 0;
-        if (week == workAndWeek) // 全周
+        // 全周
+        if (week == workAndWeek)
         {
             totalDay = 366;
-        } else if (week == workday) // 工作日
+        } else if (week == workday)
         {
+            // 工作日
             totalDay = 262;
-        } else if (week == weekend)// 休息日
+        } else if (week == weekend)
         {
+            // 休息日
             totalDay = 104;
         }
         return totalDay;
@@ -64,10 +77,11 @@ public class GeneralUtil {
 
     /**
      * 成功获取数据
+     *
      * @param data
      * @return
      */
-    public static ResultVO success(List data) {
+    public static ResultVO success(Object data) {
         ResultVO resultVO = new ResultVO();
         resultVO.setCode(0);
         resultVO.setData(data);
@@ -77,11 +91,12 @@ public class GeneralUtil {
 
     /**
      * 成功获取数据
+     *
      * @param data
      * @param message
      * @return
      */
-    public static ResultVO success(List data, String message) {
+    public static ResultVO success(Object data, String message) {
         ResultVO resultVO = new ResultVO();
         resultVO.setCode(0);
         resultVO.setData(data);
@@ -91,6 +106,7 @@ public class GeneralUtil {
 
     /**
      * 获取数据失败
+     *
      * @param code
      * @param message
      * @return

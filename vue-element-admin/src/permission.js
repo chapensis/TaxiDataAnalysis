@@ -8,23 +8,33 @@ import { getToken } from '@/utils/auth' // getToken from cookie
 NProgress.configure({ showSpinner: false })// NProgress Configuration
 
 // permission judge function
+// roles是当前用户角色，permissionRoles是需要的角色
 function hasPermission(roles, permissionRoles) {
-  if (roles.indexOf('admin') >= 0) return true // admin permission passed directly
-  if (!permissionRoles) return true
+  if (roles.indexOf('admin') >= 0) {
+    return true // admin permission passed directly
+  }
+  if (!permissionRoles) {
+    return true
+  }
+
   return roles.some(role => permissionRoles.indexOf(role) >= 0)
 }
 
 const whiteList = ['/login', '/authredirect']// no redirect whitelist
 
+// 每次进行路由跳转，都需要进行验证
 router.beforeEach((to, from, next) => {
   NProgress.start() // start progress bar
-  if (getToken()) { // determine if there has token
+  if (getToken()) { // determine if there has token, 每次跳转都需要验证
     /* has token*/
     if (to.path === '/login') {
-      next({ path: '/' })
+      next({ path: '/' }) // 如果有token还想跳转去登录页面，就直接停留在当前页面
       NProgress.done() // if current page is dashboard will not trigger	afterEach hook, so manually handle it
     } else {
       if (store.getters.roles.length === 0) { // 判断当前用户是否已拉取完user_info信息
+        console.log('有token还是没角色，这应该是很难发生的事情')
+        console.log('因此查看to.path:', to.path)
+        console.log('因此查看token:', getToken())
         store.dispatch('GetUserInfo').then(res => { // 拉取user_info
           const roles = res.data.roles // note: roles must be a array! such as: ['editor','develop']
           store.dispatch('GenerateRoutes', { roles }).then(() => { // 根据roles权限生成可访问的路由表
@@ -49,7 +59,7 @@ router.beforeEach((to, from, next) => {
     }
   } else {
     /* has no token*/
-    if (whiteList.indexOf(to.path) !== -1) { // 在免登录白名单，直接进入
+    if (whiteList.indexOf(to.path) !== -1) { // 在免登录白名单（比如：登录），直接进入
       next()
     } else {
       next('/login') // 否则全部重定向到登录页

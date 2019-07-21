@@ -7,7 +7,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">New Visits</div>
-          <count-to :start-val="0" :end-val="102400" :duration="2600" class="card-panel-num"/>
+          <count-to :start-val="0" :end-val="visitCount" :duration="2600" class="card-panel-num"/>
         </div>
       </div>
     </el-col>
@@ -49,14 +49,37 @@
 
 <script>
 import CountTo from 'vue-count-to'
+import { mapState, mapActions } from 'vuex'
 
 export default {
   components: {
     CountTo
   },
+  computed: {
+    ...mapState('home', ['visitCount'])
+  },
+  created() {
+    this.handleGetVisitCount();
+  },
   methods: {
+    ...mapActions('home', ['getVisitCount']),
     handleSetLineChartData(type) {
       this.$emit('handleSetLineChartData', type)
+    },
+    handleGetVisitCount() {
+      this.loadingText = '正在加载交易数据';
+      this.isLoading = true;
+      this.getVisitCount({
+      })
+        .then(() => {
+          this.isLoading = false
+        })
+        .catch(err => {
+          this.isLoading = false
+          if (typeof err === 'string' && err !== 'cancel') {
+            this.$message.error(err)
+          }
+        });
     }
   }
 }

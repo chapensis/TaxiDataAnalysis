@@ -19,7 +19,7 @@ import './mock' // simulation data
 
 import * as filters from './filters' // global filters
 
-Vue.fiter('formatSecond', (time, format) => Moment.unix(time).format(format));
+Vue.filter('formatSecond', (time, format) => Moment.unix(time).format(format));
 Vue.use(Element, {
   size: 'medium', // set element-ui default size
   i18n: (key, value) => i18n.t(key, value)

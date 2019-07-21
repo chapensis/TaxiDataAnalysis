@@ -8,6 +8,7 @@ import user from './modules/user'
 import taxi from './modules/taxi'
 import road from './modules/road'
 import business from './modules/business'
+import home from './modules/home'
 import getters from './getters'
 import state from './state'
 
@@ -22,6 +23,7 @@ const store = new Vuex.Store({
     user,
     taxi,
     road,
+    home,
     business
   },
   getters,

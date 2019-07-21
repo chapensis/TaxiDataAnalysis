@@ -8,9 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Slf4j
 @RestController
 @RequestMapping(value = "/service/user")
@@ -19,17 +16,21 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    /**
+     * 登陆成功，需要把用户的token信息存到header中，
+     *
+     * @param user
+     * @return
+     */
     @PostMapping("login")
-    public UserVO login(@RequestBody UserVO user) {
-        UserVO resultUser = userService.getUserInfo();
-        return resultUser;
+    public ResultVO login(@RequestBody UserVO user) {
+        UserVO resultUser = userService.login();
+        return GeneralUtil.success(resultUser, "用户登录成功");
     }
 
     @GetMapping("info")
-    public UserVO info(@RequestParam("user") String user) {
+    public ResultVO info(@RequestParam("user") String user) {
         UserVO resultUser = userService.getUserInfo();
-        return resultUser;
+        return GeneralUtil.success(resultUser, "查询用户信息成功");
     }
-
-
 }

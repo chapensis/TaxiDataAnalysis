@@ -8,8 +8,19 @@ import redis.clients.jedis.Jedis;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * @author yangchang
+ */
 @Slf4j
 public class ControllerInterceptor implements HandlerInterceptor {
+    /**
+     * 当前的作用就是只是拦截统计访问次数
+     * @param request
+     * @param response
+     * @param handler
+     * @return
+     * @throws Exception
+     */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         log.info("ControllerInterceptor preHandle ...");
@@ -19,7 +30,7 @@ public class ControllerInterceptor implements HandlerInterceptor {
 
             // 2、保存数据
             jedis.incr("visits");
-            log.info("当前访问次数：" + jedis.get("visits"));
+            log.info("记录当前访问次数：" + jedis.get("visits"));
 
             // 4、关闭连接
             jedis.close();
