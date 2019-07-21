@@ -75,6 +75,7 @@ export default {
           this.isLoading = false
         })
         .catch(err => {
+          console.log('error:', err)
           this.isLoading = false
           if (typeof err === 'string' && err !== 'cancel') {
             this.$message.error(err)

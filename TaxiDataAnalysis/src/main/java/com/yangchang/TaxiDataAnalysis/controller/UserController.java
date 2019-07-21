@@ -29,7 +29,7 @@ public class UserController {
     }
 
     @GetMapping("info")
-    public ResultVO info(@RequestParam("user") String user) {
+    public ResultVO info() {
         UserVO resultUser = userService.getUserInfo();
         return GeneralUtil.success(resultUser, "查询用户信息成功");
     }

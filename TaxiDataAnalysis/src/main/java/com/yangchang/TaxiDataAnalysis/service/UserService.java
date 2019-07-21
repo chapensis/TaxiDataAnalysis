@@ -34,7 +34,7 @@ public class UserService {
         String username = user.getUsername();
         // jwt: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjcmVhdGVUaW1lIjoxNTYzNjM0NzI1MDk3LCJleHAiOjE1NjQyMzk1MjV9._3VdB3-bdQkYDLXconrmT0EFqGigSDw0c2u1BuVF3E8
         String jwt = JWTUtil.sign(username, JWTUtil.SECRET);
-//        user.setToken(jwt);
+        user.setToken(jwt);
 
         RBucket rBucket = redissonClient.getBucket(jwt);
         rBucket.set(user, JWTUtil.EXPIRE_TIME_MS, TimeUnit.MILLISECONDS);
@@ -54,7 +54,8 @@ public class UserService {
         resultUser.setToken("admin");
         resultUser.setIntroduction("我是超级管理员杨昌");
         resultUser.setAvatar("https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif");
-        resultUser.setName("Super Amin yangchang");
+        resultUser.setUsername("Super Amin yangchang");
+        resultUser.setName("yangchang");
 
         return resultUser;
     }

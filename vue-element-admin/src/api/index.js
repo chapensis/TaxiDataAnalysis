@@ -1,5 +1,6 @@
 import 'es6-promise/auto';
 import 'whatwg-fetch';
+import { getToken } from '@/utils/auth'
 
 const fetchUtil = request => {
   return fetch(request)
@@ -22,10 +23,12 @@ const fetchUtil = request => {
 
 export default {
   fetch(data) {
+    const token = getToken()
     const init = {
       method: data.method,
       headers: new Headers({
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': token // 每次请求都必须带上token信息
       }),
       credentials: 'include',
       redirect: 'follow',

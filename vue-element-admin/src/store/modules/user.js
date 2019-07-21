@@ -53,7 +53,7 @@ const user = {
             console.log('loginByUsername 没有返回数据，所以error')
             reject('error')
           }
-          const data = response.data.data
+          const data = response.data
           commit('SET_TOKEN', data.token)
           setToken(data.token)
           resolve()
@@ -67,17 +67,14 @@ const user = {
     GetUserInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
         getUserInfo(state.token).then(response => {
-          console.log('GetUserInfo response', response)
           if (!response.data) { // 由于mockjs 不支持自定义状态码只能这样hack
-            console.log('GetUserInfo 没有返回数据，所以error')
             reject('error')
           }
           const data = response.data
-          console.log('GetUserInfo data', response.data)
           if (data.roles && data.roles.length > 0) { // 验证返回的roles是否是一个非空数组
             commit('SET_ROLES', data.roles)
           } else {
-            reject('getInfo: roles must be a non-null array !')
+            reject('GetUserInfo error: roles must be a non-null array !')
           }
 
           commit('SET_NAME', data.name)
