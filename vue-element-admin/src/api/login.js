@@ -24,7 +24,6 @@ export function logout() {
 }
 
 export function getUserInfo(token) {
-  console.log('我准备去请求getUserInfo啦：', token)
   // 实验表明，这里并没有真正请求到后台
   return request({
     url: '/service/user/info',

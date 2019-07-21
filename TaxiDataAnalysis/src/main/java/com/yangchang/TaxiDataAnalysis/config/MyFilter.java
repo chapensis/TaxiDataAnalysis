@@ -9,7 +9,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.redisson.api.RBucket;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
 import org.springframework.core.annotation.Order;
 
 import javax.servlet.*;
@@ -80,16 +79,16 @@ public class MyFilter implements Filter {
         log.info("checkToken token:" + token);
         // 在访问头部中，存放一个 Authorization的头，没有这个头就无权访问
         if (StringUtils.isBlank(token)) {
-            sendJsonResponse(response, 401, "您尚未登录，无权访问");
+            sendJsonResponse(response, 50016, "您尚未登录，无权访问");
             return false;
         }
 
         // 校验token是否存在
         RBucket<UserVO> rBucket = redissonClient.getBucket(token);
         UserVO userVO = rBucket.get();
-        // 如果存在就会得到UserBO
+        // 如果存在就会得到UserVO
         if (userVO == null) {
-            sendJsonResponse(response, 403, "无效令牌");
+            sendJsonResponse(response, 50015, "无效令牌，未通过认证");
             return false;
         }
 
@@ -106,13 +105,13 @@ public class MyFilter implements Filter {
      */
     private boolean isAccessAllowed(HttpServletRequest request, HttpServletResponse response) {
         String token = request.getHeader("Authorization");
-        log.info("isAccessAllowed token:" + token);
+        log.info("token:" + token);
         String username = JWTUtil.getUsername(token);
         String userKey = PREFIX + username;
 
         RBucket<String> bucket = redissonClient.getBucket(userKey);
         String redisToken = bucket.get();
-
+        log.info("redisToken:" + redisToken);
         // 说明之前登陆的也是这个用户
         if (token.equals(redisToken)) {
             return true;
@@ -127,17 +126,17 @@ public class MyFilter implements Filter {
             if (tokenUnixTime.compareTo(redisTokenUnixTime) > 0) {
                 bucket.set(token);
             } else {
-                // 如果当前请求的时间比redis中的旧，就说明有其他用户在其他浏览器登陆。注销当前token
+                // 如果当前请求的时间比redis中的旧，就说明有其他用户在其他浏览器登陆。注销当前旧token,下次再访问就没有token了
                 userService.logout(token);
-                sendJsonResponse(response, 4001, "您的账号已在其他设备登录");
+                sendJsonResponse(response, 50017, "您的账号已在其他设备登录，请重新登录");
                 return false;
             }
         }
         return true;
     }
 
-    private static void sendJsonResponse(HttpServletResponse resp, int code, String message) {
-        sendJsonResponse(resp, String.format(jsonTemplate(), code, message));
+    private static void sendJsonResponse(HttpServletResponse response, int code, String message) {
+        sendJsonResponse(response, String.format(jsonTemplate(), code, message));
     }
 
     private static String jsonTemplate() {
