@@ -3,7 +3,6 @@ package com.yangchang.TaxiDataAnalysis.controller;
 import com.yangchang.TaxiDataAnalysis.bean.vo.ResultVO;
 import com.yangchang.TaxiDataAnalysis.bean.vo.RoadInfoVO;
 import com.yangchang.TaxiDataAnalysis.service.RoadService;
-import com.yangchang.TaxiDataAnalysis.tools.GeneralUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author yangchang
+ */
 @Slf4j
 @RestController
 @RequestMapping(value = "/service/road")
@@ -28,7 +30,7 @@ public class RoadController {
     @PostMapping("list")
     public ResultVO listRoads(@RequestBody RoadInfoVO roadInfoVO) {
         List list = roadService.listRoads(roadInfoVO);
-        ResultVO result = GeneralUtil.success(list);
+        ResultVO result = ResultVO.success(list);
         return result;
     }
 
@@ -41,7 +43,7 @@ public class RoadController {
     @PostMapping("add")
     public ResultVO addRoad(@RequestBody RoadInfoVO roadInfoVO) {
         RoadInfoVO resultRoad = roadService.addRoad(roadInfoVO);
-        ResultVO result = GeneralUtil.success(new ArrayList() {{
+        ResultVO result = ResultVO.success(new ArrayList() {{
             add(resultRoad);
         }}, "添加路段成功");
         return result;
@@ -56,7 +58,7 @@ public class RoadController {
     @PostMapping("delete")
     public ResultVO deleteRoad(@RequestBody RoadInfoVO roadInfoVO) {
         int resultLine = roadService.deleteRoad(roadInfoVO);
-        ResultVO result = GeneralUtil.success(new ArrayList() {{
+        ResultVO result = ResultVO.success(new ArrayList() {{
             add(resultLine);
         }}, "删除路段成功");
         return result;
@@ -71,7 +73,7 @@ public class RoadController {
     @PostMapping("update")
     public ResultVO updateRoad(@RequestBody RoadInfoVO roadInfoVO) {
         int resultLine = roadService.updateRoad(roadInfoVO);
-        ResultVO result = GeneralUtil.success(new ArrayList() {{
+        ResultVO result = ResultVO.success(new ArrayList() {{
             add(resultLine);
         }}, "更新路段成功");
         return result;

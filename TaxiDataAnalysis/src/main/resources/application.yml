@@ -37,8 +37,11 @@ spring:
     database: 0 # 数据库索引（默认为0）
     host: 127.0.0.1  # 服务器地址 变更为自己的
     port: 6379
-#    password: null
+    password: 123456
     timeout: 30000
+    poolMaxTotal: 8
+    poolMaxIdle: 4
+    poolMaxWait: 3
     jedis:
       pool:
         max-active: 8 # 连接池最大连接数（使用负值表示没有限制）

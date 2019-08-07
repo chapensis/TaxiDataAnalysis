@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 
 @Slf4j
-@Component
 @Aspect
+@Component
 public class ControllerAspect {
 
     /**

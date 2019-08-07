@@ -1,9 +1,12 @@
 package com.yangchang.TaxiDataAnalysis.controller.interceptor;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,6 +16,10 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Slf4j
 public class ControllerInterceptor implements HandlerInterceptor {
+
+    @Autowired
+    private JedisPool jedisPool;
+
     /**
      * 当前的作用就是只是拦截统计访问次数
      * @param request
@@ -25,8 +32,9 @@ public class ControllerInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         log.info("ControllerInterceptor preHandle ...");
         try {
-            // 1、设置IP地址和端口
-            Jedis jedis = new Jedis("127.0.0.1", 6379);
+            // 1、设置IP地址和端口, 直接用连接池，不用每次都自己new啦!!!, TODO ControllerInterceptor jedisPool没法注入
+             Jedis jedis = new Jedis("127.0.0.1", 6379);
+//            Jedis jedis = jedisPool.getResource();
 
             // 2、保存数据
             jedis.incr("visits");

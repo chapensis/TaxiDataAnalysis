@@ -3,7 +3,6 @@ package com.yangchang.TaxiDataAnalysis.controller;
 import com.yangchang.TaxiDataAnalysis.bean.vo.ResultVO;
 import com.yangchang.TaxiDataAnalysis.bean.vo.RoadTripInfoVO;
 import com.yangchang.TaxiDataAnalysis.service.RoadTripService;
-import com.yangchang.TaxiDataAnalysis.tools.GeneralUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+
+/**
+ * @author yangchang
+ */
 @Slf4j
 @RestController
 @RequestMapping(value = "/service/roadtrip")
@@ -29,7 +32,7 @@ public class RoadTripController {
     @PostMapping("slist")
     public ResultVO listRoadSeekingTrips(@RequestBody RoadTripInfoVO roadTripInfoVO) {
         List list = roadTripService.listRoadSeekingTrips(roadTripInfoVO);
-        ResultVO result = GeneralUtil.success(list);
+        ResultVO result = ResultVO.success(list);
         return result;
     }
 
@@ -42,7 +45,7 @@ public class RoadTripController {
     @PostMapping("dlist")
     public ResultVO listRoadDrivingTrips(@RequestBody RoadTripInfoVO roadTripInfoVO) {
         List list = roadTripService.listRoadDrivingTrips(roadTripInfoVO);
-        ResultVO result = GeneralUtil.success(list);
+        ResultVO result = ResultVO.success(list);
         return result;
     }
 }

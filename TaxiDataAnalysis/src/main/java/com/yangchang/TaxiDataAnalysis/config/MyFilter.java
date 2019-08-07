@@ -31,6 +31,8 @@ import java.io.PrintWriter;
 public class MyFilter implements Filter {
     private static final String PREFIX = "uni_token_";
 
+    private static final String[] whileList = {"/service/test", "/service/user/"};
+
     @Autowired
     public RedissonClient redissonClient;
 
@@ -51,7 +53,7 @@ public class MyFilter implements Filter {
         log.info("MyFilter doFilter ... remoteAddr:" + remoteAddr + " request url: " + request.getRequestURI());
         try {
             // 如果是登陆请求，则不做认证的拦截
-            if ("/service/user/login".equals(request.getRequestURI())) {
+            if (isUrlInWhileList(request.getRequestURI())) {
                 filterChain.doFilter(servletRequest, servletResponse);
             } else if (checkToken(request, response) && isAccessAllowed(request, response)) {
                 // give it to next filter
@@ -60,6 +62,21 @@ public class MyFilter implements Filter {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 检查请求的路径是否在白名单中
+     *
+     * @param url
+     * @return
+     */
+    private boolean isUrlInWhileList(String url) {
+        for (String noCheckUrl : whileList) {
+            if (url.startsWith(noCheckUrl)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

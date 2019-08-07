@@ -2,13 +2,22 @@ package com.yangchang.TaxiDataAnalysis.bean.vo;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.List;
 
+/**
+ * @author yangchang
+ */
 @Data
-public class UserVO {
+public class UserVO implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
+    @NotNull
     private String username;
 
+    @NotNull
     private String password;
 
     private List<String> roles;

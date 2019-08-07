@@ -1,4 +1,4 @@
-package com.yangchang.TaxiDataAnalysis.config;
+package com.yangchang.TaxiDataAnalysis.config.redis;
 
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
@@ -24,6 +24,11 @@ public class RedissonConfig {
 //    private String password;
 
 
+    /**
+     * 用这种方式来初始化Redisson
+     *
+     * @return
+     */
     @Bean
     public RedissonClient getRedisson() {
 
