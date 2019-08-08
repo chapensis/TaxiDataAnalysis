@@ -43,9 +43,7 @@ public class RoadController {
     @PostMapping("add")
     public ResultVO addRoad(@RequestBody RoadInfoVO roadInfoVO) {
         RoadInfoVO resultRoad = roadService.addRoad(roadInfoVO);
-        ResultVO result = ResultVO.success(new ArrayList() {{
-            add(resultRoad);
-        }}, "添加路段成功");
+        ResultVO result = ResultVO.success(resultRoad, "添加路段成功");
         return result;
     }
 
@@ -58,9 +56,7 @@ public class RoadController {
     @PostMapping("delete")
     public ResultVO deleteRoad(@RequestBody RoadInfoVO roadInfoVO) {
         int resultLine = roadService.deleteRoad(roadInfoVO);
-        ResultVO result = ResultVO.success(new ArrayList() {{
-            add(resultLine);
-        }}, "删除路段成功");
+        ResultVO result = ResultVO.success(resultLine, "删除路段成功");
         return result;
     }
 
@@ -73,9 +69,7 @@ public class RoadController {
     @PostMapping("update")
     public ResultVO updateRoad(@RequestBody RoadInfoVO roadInfoVO) {
         int resultLine = roadService.updateRoad(roadInfoVO);
-        ResultVO result = ResultVO.success(new ArrayList() {{
-            add(resultLine);
-        }}, "更新路段成功");
+        ResultVO result = ResultVO.success(resultLine, "更新路段成功");
         return result;
     }
 }

@@ -20,8 +20,8 @@ public class RedissonConfig {
     @Value("${spring.redis.port}")
     private String port;
 
-//    @Value("${spring.redis.password}")
-//    private String password;
+    @Value("${spring.redis.password}")
+    private String password;
 
 
     /**
@@ -33,7 +33,7 @@ public class RedissonConfig {
     public RedissonClient getRedisson() {
 
         Config config = new Config();
-        config.useSingleServer().setAddress("redis://" + host + ":" + port); // .setPassword(password); // 暂时没有密码
+        config.useSingleServer().setAddress("redis://" + host + ":" + port).setPassword(password);
         // 添加主从配置
         // config.useMasterSlaveServers().setMasterAddress("").setPassword("").addSlaveAddress(new String[]{"",""});
 

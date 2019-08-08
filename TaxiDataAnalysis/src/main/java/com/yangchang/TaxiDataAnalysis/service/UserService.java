@@ -1,5 +1,6 @@
 package com.yangchang.TaxiDataAnalysis.service;
 
+import com.yangchang.TaxiDataAnalysis.bean.Constant;
 import com.yangchang.TaxiDataAnalysis.bean.vo.UserVO;
 import com.yangchang.TaxiDataAnalysis.tools.JWTUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -8,6 +9,7 @@ import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,19 +25,24 @@ public class UserService {
     @Autowired
     public RedissonClient redissonClient;
 
+    @Autowired
+    private JedisPool jedisPool;
+
     /**
      * 用户登录
+     * 登陆成功后保存用户token和userVO到redis中
      *
      * @return
      */
-    public UserVO login() {
+    public UserVO login(UserVO loginUserVO) {
+        log.info("假装在检查用户名和密码：" + loginUserVO.getUsername() + " " + loginUserVO.getPassword());
         UserVO user = getUserInfo();
         String username = user.getUsername();
-        // jwt: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjcmVhdGVUaW1lIjoxNTYzNjM0NzI1MDk3LCJleHAiOjE1NjQyMzk1MjV9._3VdB3-bdQkYDLXconrmT0EFqGigSDw0c2u1BuVF3E8
-        String jwt = JWTUtil.sign(username, JWTUtil.SECRET);
-        user.setToken(jwt);
-
-        RBucket rBucket = redissonClient.getBucket(jwt);
+        // token: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjcmVhdGVUaW1lIjoxNTYzNjM0NzI1MDk3LCJleHAiOjE1NjQyMzk1MjV9._3VdB3-bdQkYDLXconrmT0EFqGigSDw0c2u1BuVF3E8
+        String token = JWTUtil.sign(username, JWTUtil.SECRET);
+        user.setToken(token);
+        // 保存token和user到分布式redis中
+        RBucket rBucket = redissonClient.getBucket(token);
         rBucket.set(user, JWTUtil.EXPIRE_TIME_MS, TimeUnit.MILLISECONDS);
         return user;
     }
@@ -66,13 +73,13 @@ public class UserService {
      */
     public Integer getVisitCount() {
         // 1、设置IP地址和端口
-        Jedis jedis = new Jedis("127.0.0.1", 6379);
+        Jedis jedis = jedisPool.getResource();
 
         // 2、保存数据
-        Integer visitCount = Integer.parseInt(jedis.get("visits"));
+        Integer visitCount = Integer.parseInt(jedis.get(Constant.VISIT_COUNT));
         log.info("获得当前访问次数：" + visitCount);
 
-        // 4、关闭连接
+        // 3、关闭连接
         jedis.close();
 
         return visitCount;
@@ -80,6 +87,7 @@ public class UserService {
 
     /**
      * 用户登出
+     *
      * @param jwt
      */
     public void logout(String jwt) {

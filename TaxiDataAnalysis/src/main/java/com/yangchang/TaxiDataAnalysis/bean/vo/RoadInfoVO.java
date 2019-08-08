@@ -5,6 +5,10 @@ import com.yangchang.TaxiDataAnalysis.bean.po.RoadInfoPO;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 
+/**
+ * @author yangchang
+ * 路段信息
+ */
 @Data
 public class RoadInfoVO {
     private Integer roadId;

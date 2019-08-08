@@ -14,10 +14,10 @@ public class UserVO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @NotNull
+    @NotNull(message = "用户名不能为空")
     private String username;
 
-    @NotNull
+    @NotNull(message = "密码不能为空")
     private String password;
 
     private List<String> roles;

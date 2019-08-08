@@ -54,6 +54,7 @@ const user = {
             reject('error')
           }
           const data = response.data
+          // 在返回的数据中获得token并保存到浏览器中
           commit('SET_TOKEN', data.token)
           setToken(data.token)
           resolve()

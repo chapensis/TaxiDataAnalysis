@@ -7,6 +7,10 @@ import org.springframework.beans.BeanUtils;
 
 import java.util.Date;
 
+/**
+ * @author yangchang
+ * 交易信息
+ */
 @Data
 public class BusinessVO {
     private Integer businessId;
