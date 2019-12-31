@@ -5,6 +5,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 
+/**
+ * 启动程序
+ * @author yangchang
+ */
 @SpringBootApplication
 @MapperScan("pers.yangchang.TaxiDataAnalysis.dao")
 @ServletComponentScan // Servlet/Filter/Listtener @WebServlet all need it, @ServletComponentScan for third jar
