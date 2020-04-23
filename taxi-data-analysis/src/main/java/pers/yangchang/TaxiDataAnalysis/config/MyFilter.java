@@ -76,7 +76,8 @@ public class MyFilter implements Filter {
                 return true;
             }
         }
-        return false;
+        // 这里假设都是true
+        return true;
     }
 
     @Override

@@ -1,5 +1,8 @@
 package pers.yangchang.TaxiDataAnalysis.config;
 
+import org.springframework.core.Ordered;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import pers.yangchang.TaxiDataAnalysis.controller.interceptor.ControllerInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,5 +35,26 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(getControllerInterceptor()).addPathPatterns("/*/**");
         super.addInterceptors(registry);
+    }
+
+    /**
+     * 静态资源路由
+     * @param registry
+     */
+    @Override
+    protected void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/static/");
+        registry.addResourceHandler("/index.html").addResourceLocations("classpath:/static/index.html");
+        registry.addResourceHandler("/favicon.ico").addResourceLocations("classpath:/static/favicon.icol");
+    }
+
+    /**
+     * 默认首页，可以指定到static、public下的某些页面
+     * @param registry
+     */
+    @Override
+    protected void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/").setViewName("forward:/index.html");
+        registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
     }
 }
